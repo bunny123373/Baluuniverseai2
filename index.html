@@ -1,14 +1,9 @@
-<iframe
-  class="w-full h-52 sm:h-60 rounded-xl border border-slate-800"
-  src="https://www.youtube.com/embed/7PzaHv0ql8Q"
-  title="Balu AI Christmas Edit"
-  ...
-></iframe><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Balu Universe Movies</title>
+  <title>BaluTube | The Dream Universe</title>
 
   <!-- Tailwind CSS CDN -->
   <link
@@ -21,89 +16,312 @@
       scroll-behavior: smooth;
     }
     body {
-      background: #05060a;
-      color: #f9fafb;
+      background: #020617;
+      color: #e5e7eb;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    .row-scroll {
-      display: flex;
-      overflow-x: auto;
-      scrollbar-width: thin;
-      scrollbar-color: #4b5563 #020617;
-    }
-    .row-scroll::-webkit-scrollbar {
+    .scroll-thin::-webkit-scrollbar {
+      width: 6px;
       height: 6px;
     }
-    .row-scroll::-webkit-scrollbar-track {
+    .scroll-thin::-webkit-scrollbar-track {
       background: #020617;
     }
-    .row-scroll::-webkit-scrollbar-thumb {
+    .scroll-thin::-webkit-scrollbar-thumb {
       background: #4b5563;
       border-radius: 999px;
-    }
-    .poster-card {
-      min-width: 170px;
-      max-width: 170px;
-      border-radius: 0.75rem;
-      overflow: hidden;
-      background: #020617;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .poster-card:hover {
-      transform: translateY(-6px) scale(1.03);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.75);
-    }
-    .tag-pill {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-    .gradient-border {
-      border: 1px solid transparent;
-      background-image:
-        linear-gradient(#020617, #020617),
-        linear-gradient(135deg, #4f46e5, #ec4899);
-      background-origin: border-box;
-      background-clip: padding-box, border-box;
     }
   </style>
 </head>
 <body class="min-h-screen">
 
-  <!-- NAVBAR -->
-  <header class="sticky top-0 z-30 bg-gradient-to-b from-black/80 via-black/60 to-transparent border-b border-slate-800">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-xl font-extrabold">
-          B
+  <!-- HEADER (YouTube style) -->
+  <header class="sticky top-0 z-30 bg-[#020617]/95 border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-3 sm:px-4 py-2 flex items-center justify-between">
+      <!-- Left: Logo + Title -->
+      <div class="flex items-center space-x-2">
+        <div class="w-8 h-8 rounded-md bg-gradient-to-br from-red-500 via-rose-500 to-yellow-400 flex items-center justify-center">
+          <span class="text-xs font-extrabold tracking-tight">BU</span>
         </div>
         <div>
-          <p class="text-sm font-semibold tracking-wide">Balu Universe Movies</p>
-          <p class="text-[11px] text-slate-400">AI Edits • Movie Vibe Hub</p>
+          <p class="text-sm font-semibold leading-tight">
+            BaluTube
+          </p>
+          <p class="text-[10px] text-slate-400">
+            The Dream Universe • AI Edits
+          </p>
         </div>
       </div>
 
-      <nav class="hidden md:flex items-center space-x-5 text-xs font-medium text-slate-200">
-        <a href="#home" class="hover:text-indigo-400">Home</a>
-        <a href="#ai-originals" class="hover:text-indigo-400">Balu AI Originals</a>
-        <a href="#telugu" class="hover:text-indigo-400">Telugu</a>
-        <a href="#hindi" class="hover:text-indigo-400">Hindi</a>
-        <a href="#anime" class="hover:text-indigo-400">Anime</a>
-        <a href="#contact" class="hover:text-indigo-400">Contact</a>
+      <!-- Center: Fake search bar (UI only) -->
+      <div class="hidden sm:flex flex-1 max-w-md mx-4">
+        <input
+          class="w-full px-3 py-1.5 rounded-l-full bg-slate-900 border border-slate-700 text-xs focus:outline-none focus:border-blue-500"
+          placeholder="Search (UI only)"
+        />
+        <button class="px-3 rounded-r-full bg-slate-800 border border-l-0 border-slate-700 text-xs text-slate-300">
+          🔍
+        </button>
+      </div>
+
+      <!-- Right: Channel button -->
+      <div class="flex items-center space-x-2">
         <a
           href="https://youtube.com/@thedreamuniverse-26?si=x8-kqBOQrMtuXUME"
           target="_blank"
           class="px-3 py-1.5 rounded-full bg-red-600 hover:bg-red-700 text-[11px] font-semibold"
         >
-          YouTube
+          Open Channel
         </a>
-      </nav>
+      </div>
     </div>
   </header>
 
-  <!-- HERO -->
-  <section id="home" class="relative">
-    <div class="absolute inset-0 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none"></div>
+  <!-- MAIN CONTENT -->
+  <main class="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-6">
+
+    <!-- Channel Header -->
+    <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-800 pb-3">
+      <div class="flex items-center space-x-3">
+        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-lg font-bold">
+          B
+        </div>
+        <div>
+          <p class="text-base font-semibold flex items-center space-x-2">
+            <span>The Dream Universe</span>
+            <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">AI Channel</span>
+          </p>
+          <p class="text-[11px] text-slate-400">
+            AI edits • Spiritual • Fantasy • Movie vibes
+          </p>
+        </div>
+      </div>
+      <div class="flex items-center space-x-2 text-[11px] text-slate-400">
+        <span class="px-2 py-1 rounded-full bg-slate-900 border border-slate-700">Balu</span>
+        <span>Official Website View</span>
+      </div>
+    </section>
+
+    <!-- PLAYER + SIDEBAR (YouTube layout) -->
+    <section class="grid md:grid-cols-3 gap-4 md:gap-5">
+      <!-- Left: Main Player -->
+      <div class="md:col-span-2 space-y-2">
+        <div class="w-full rounded-xl overflow-hidden bg-black border border-slate-800">
+          <iframe
+            class="w-full h-56 sm:h-72 md:h-80"
+            src="https://www.youtube.com/embed/7PzaHv0ql8Q"
+            title="Balu AI Christmas Edit"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div class="space-y-1">
+          <h1 class="text-sm sm:text-base font-semibold">
+            Balu AI Christmas Edit • Magical Village
+          </h1>
+          <p class="text-[11px] text-slate-400">
+            AI-generated Christmas dreamscape created by Balu. Watch in full on YouTube for likes, comments & subscribe.
+          </p>
+          <a
+            href="https://youtu.be/7PzaHv0ql8Q"
+            target="_blank"
+            class="inline-flex items-center text-[11px] text-blue-400 hover:text-blue-300"
+          >
+            Open on YouTube for full experience →
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: Up Next List -->
+      <aside class="space-y-2 max-h-[420px] md:max-h-[500px] overflow-y-auto scroll-thin">
+        <p class="text-xs font-semibold text-slate-300 mb-1">Up next</p>
+
+        <!-- Up next card 1 (current) -->
+        <a
+          href="https://youtu.be/7PzaHv0ql8Q"
+          target="_blank"
+          class="flex space-x-2 rounded-lg bg-slate-900/70 border border-slate-800 hover:border-blue-500 p-1.5"
+        >
+          <div class="w-24 h-16 rounded-md bg-cover bg-center"
+               style="background-image:url('https://i.ytimg.com/vi/7PzaHv0ql8Q/hqdefault.jpg');">
+          </div>
+          <div class="flex-1">
+            <p class="text-[11px] font-semibold leading-snug">
+              Christmas AI Edit • Magical Village
+            </p>
+            <p class="text-[10px] text-slate-400">
+              The Dream Universe • AI
+            </p>
+            <p class="text-[10px] text-slate-500">Now playing</p>
+          </div>
+        </a>
+
+        <!-- Up next card 2 -->
+        <a
+          href="https://youtu.be/m158PjU_XS8"
+          target="_blank"
+          class="flex space-x-2 rounded-lg bg-slate-900/40 border border-slate-800 hover:border-blue-500 p-1.5"
+        >
+          <div class="w-24 h-16 rounded-md bg-cover bg-center"
+               style="background-image:url('https://i.ytimg.com/vi/m158PjU_XS8/hqdefault.jpg');">
+          </div>
+          <div class="flex-1">
+            <p class="text-[11px] font-semibold leading-snug">
+              Spiritual AI Edit • Peaceful Walk
+            </p>
+            <p class="text-[10px] text-slate-400">
+              The Dream Universe
+            </p>
+            <p class="text-[10px] text-slate-500">Watch on YouTube</p>
+          </div>
+        </a>
+
+        <!-- Placeholder Up next items (future videos) -->
+        <div class="text-[10px] text-slate-500 mt-2">
+          Future videos from your channel will still appear on YouTube.
+          Here you can keep 2–4 main AI edits as highlights.
+        </div>
+      </aside>
+    </section>
+
+    <!-- CHANNEL PLAYLIST SECTION (YouTube style embed) -->
+    <section class="space-y-2">
+      <div class="flex items-center justify-between">
+        <p class="text-sm font-semibold">BaluTube – Playlist Preview</p>
+        <p class="text-[10px] text-slate-400">
+          For full playlist, open channel on YouTube.
+        </p>
+      </div>
+
+      <div class="w-full rounded-xl overflow-hidden bg-black border border-slate-800">
+        <!-- Playlist embed – REPLACE PLAYLIST ID WHEN YOU HAVE ONE -->
+        <iframe
+          class="w-full h-64 sm:h-72"
+          src="https://www.youtube.com/embed/7PzaHv0ql8Q"
+          title="Balu AI Playlist Preview"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        ></iframe>
+      </div>
+
+      <p class="text-[11px] text-slate-400">
+        Tip: Later, create a playlist on your channel and replace this embed with:
+        <code class="bg-slate-900 px-1.5 py-0.5 rounded text-[10px]">
+          https://www.youtube.com/embed/videoseries?list=YOUR_PLAYLIST_ID
+        </code>
+      </p>
+    </section>
+
+    <!-- ALL VIDEOS PREVIEW GRID -->
+    <section class="space-y-2">
+      <div class="flex items-center justify-between">
+        <p class="text-sm font-semibold">Videos from The Dream Universe</p>
+        <a
+          href="https://youtube.com/@thedreamuniverse-26?si=x8-kqBOQrMtuXUME"
+          target="_blank"
+          class="text-[11px] text-blue-400 hover:text-blue-300"
+        >
+          Open full channel →
+        </a>
+      </div>
+
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
+        <!-- Card 1 -->
+        <a
+          href="https://youtu.be/7PzaHv0ql8Q"
+          target="_blank"
+          class="rounded-xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-blue-500"
+        >
+          <div
+            class="h-28 bg-cover bg-center"
+            style="background-image:url('https://i.ytimg.com/vi/7PzaHv0ql8Q/hqdefault.jpg');"
+          ></div>
+          <div class="p-2.5 space-y-1">
+            <p class="text-[11px] font-semibold leading-snug">
+              Christmas AI Edit • Magical Village
+            </p>
+            <p class="text-[10px] text-slate-400">
+              AI • Christmas • Dreamscape
+            </p>
+          </div>
+        </a>
+
+        <!-- Card 2 -->
+        <a
+          href="https://youtu.be/m158PjU_XS8"
+          target="_blank"
+          class="rounded-xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-blue-500"
+        >
+          <div
+            class="h-28 bg-cover bg-center"
+            style="background-image:url('https://i.ytimg.com/vi/m158PjU_XS8/hqdefault.jpg');"
+          ></div>
+          <div class="p-2.5 space-y-1">
+            <p class="text-[11px] font-semibold leading-snug">
+              Spiritual AI Edit • Peaceful Walk
+            </p>
+            <p class="text-[10px] text-slate-400">
+              AI • Spiritual • Calm
+            </p>
+          </div>
+        </a>
+
+        <!-- Future card placeholder -->
+        <div class="rounded-xl bg-slate-900 border border-dashed border-slate-700 p-3 flex flex-col justify-center">
+          <p class="text-[11px] font-semibold mb-1">Next AI Edit</p>
+          <p class="text-[10px] text-slate-400">
+            Upload more AI videos to your YouTube channel. Just add new cards here linking to them.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="pt-4">
+      <div class="rounded-2xl bg-slate-950 border border-slate-800 p-4 sm:p-5 space-y-3">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div>
+            <p class="text-[11px] text-slate-400 uppercase tracking-[0.12em] mb-1">
+              Contact & Collabs
+            </p>
+            <p class="text-sm font-semibold">Connect with Balu</p>
+            <p class="text-[11px] text-slate-400">
+              AI edit requests, spiritual visuals, movie vibe content.
+            </p>
+          </div>
+          <div class="text-[11px] text-slate-300">
+            <p>WhatsApp: <span class="text-slate-100">+91-7981062250</span></p>
+            <p>YouTube:
+              <a
+                href="https://youtube.com/@thedreamuniverse-26?si=x8-kqBOQrMtuXUME"
+                target="_blank"
+                class="text-blue-400"
+              >The Dream Universe</a>
+            </p>
+          </div>
+        </div>
+        <p class="text-[10px] text-slate-500">
+          All likes, comments, subscribers will still stay on YouTube. This website is your stylish front-page for your channel.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-800 py-3 bg-[#020617]">
+    <div class="max-w-6xl mx-auto px-3 sm:px-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-slate-500">
+      <p>© <span id="year"></span> BaluTube • The Dream Universe.</p>
+      <p>Made with ❤️ + AI by Balu.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+              </html>    <div class="absolute inset-0 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none"></div>
     <!-- Hero background image – replace URL with your poster -->
     <div
       class="h-[260px] sm:h-[320px] md:h-[380px] w-full bg-cover bg-center"
