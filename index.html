@@ -2,66 +2,641 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BaluTube | The Dream Universe</title>
-
-  <!-- Tailwind CSS CDN -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-    rel="stylesheet"
-  />
-
+  <title>BaluFlix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    html {
-      scroll-behavior: smooth;
-    }
-    body {
-      background: #020617;
-      color: #e5e7eb;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-    .scroll-thin::-webkit-scrollbar {
-      width: 6px;
+
+    body {
+      background-color: #000;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar small, Netflix vibe */
+    ::-webkit-scrollbar {
       height: 6px;
+      width: 6px;
     }
-    .scroll-thin::-webkit-scrollbar-track {
-      background: #020617;
-    }
-    .scroll-thin::-webkit-scrollbar-thumb {
-      background: #4b5563;
+    ::-webkit-scrollbar-thumb {
+      background: #555;
       border-radius: 999px;
+    }
+
+    .app {
+      background: radial-gradient(circle at top, #141414 0, #000 40%);
+      min-height: 100vh;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.2), transparent);
+      backdrop-filter: blur(4px);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      color: #e50914;
+    }
+
+    .nav-links {
+      display: none;
+      gap: 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    .nav-link {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+    .nav-link.active,
+    .nav-link:hover {
+      opacity: 1;
+      font-weight: 600;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .search-input {
+      background: rgba(0,0,0,0.7);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 999px;
+      padding: 0.35rem 0.8rem;
+      font-size: 0.8rem;
+      color: #fff;
+      outline: none;
+      min-width: 120px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: #e50914;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #e50914, #ff9800);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      height: 55vh;
+      min-height: 280px;
+      margin-bottom: 1rem;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url("https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=1200");
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.4);
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, #000 5%, transparent 60%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 4.5rem 1.2rem 1.5rem;
+      max-width: 600px;
+    }
+
+    .hero-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-meta {
+      font-size: 0.8rem;
+      opacity: 0.85;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero-description {
+      font-size: 0.85rem;
+      max-width: 450px;
+      opacity: 0.9;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero-badge-row {
+      display: flex;
+      gap: 0.6rem;
+      font-size: 0.75rem;
+      opacity: 0.85;
+    }
+
+    .badge {
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* ROWS */
+    .content {
+      padding: 0 0 2rem;
+      margin-top: 3rem;
+    }
+
+    .row {
+      margin-bottom: 1rem;
+      padding: 0 0.7rem;
+    }
+
+    .row-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.4rem;
+      padding: 0 0.3rem;
+    }
+
+    .row-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .row-link {
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+
+    .row-scroll {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.4rem;
+    }
+
+    .card {
+      position: relative;
+      min-width: 120px;
+      max-width: 130px;
+      height: 180px;
+      border-radius: 0.5rem;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      overflow: hidden;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 60%);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .card:hover::after {
+      opacity: 1;
+    }
+
+    .card-info {
+      position: absolute;
+      left: 0.4rem;
+      right: 0.4rem;
+      bottom: 0.4rem;
+      z-index: 1;
+      font-size: 0.7rem;
+    }
+
+    .card-title {
+      font-weight: 600;
+      margin-bottom: 0.1rem;
+    }
+
+    .card-meta {
+      font-size: 0.65rem;
+      opacity: 0.8;
+    }
+
+    /* Upload Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+
+    .modal {
+      background: #141414;
+      border-radius: 1rem;
+      padding: 1rem;
+      width: min(90%, 420px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+      border: 1px solid rgba(255,255,255,0.09);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.7rem;
+    }
+
+    .modal-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .close-btn {
+      border: none;
+      background: transparent;
+      color: #aaa;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      font-size: 0.8rem;
+    }
+
+    .modal-body label {
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    .modal-input,
+    .modal-select,
+    .modal-textarea {
+      width: 100%;
+      background: #000;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 0.4rem 0.6rem;
+      color: #fff;
+      font-size: 0.8rem;
+      outline: none;
+    }
+
+    .modal-textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+
+    .modal-footer {
+      margin-top: 0.5rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.4rem;
+    }
+
+    .hint {
+      font-size: 0.7rem;
+      opacity: 0.8;
+      margin-top: 0.3rem;
+    }
+
+    /* Responsive */
+    @media (min-width: 768px) {
+      .navbar {
+        padding: 0.7rem 3rem;
+      }
+      .nav-links {
+        display: flex;
+      }
+      .hero {
+        height: 70vh;
+      }
+      .hero-content {
+        padding: 6rem 3rem 1.5rem;
+      }
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      .hero-description {
+        font-size: 0.95rem;
+      }
+      .content {
+        padding: 0 1.8rem 2.5rem;
+      }
+      .card {
+        min-width: 160px;
+        height: 220px;
+      }
     }
   </style>
 </head>
-<body class="min-h-screen">
-
-  <!-- HEADER (YouTube style) -->
-  <header class="sticky top-0 z-30 bg-[#020617]/95 border-b border-slate-800">
-    <div class="max-w-6xl mx-auto px-3 sm:px-4 py-2 flex items-center justify-between">
-      <!-- Left: Logo + Title -->
-      <div class="flex items-center space-x-2">
-        <div class="w-8 h-8 rounded-md bg-gradient-to-br from-red-500 via-rose-500 to-yellow-400 flex items-center justify-center">
-          <span class="text-xs font-extrabold tracking-tight">BU</span>
-        </div>
-        <div>
-          <p class="text-sm font-semibold leading-tight">
-            BaluTube
-          </p>
-          <p class="text-[10px] text-slate-400">
-            The Dream Universe • AI Edits
-          </p>
+<body>
+  <div class="app">
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="nav-left">
+        <div class="logo">BALUFLIX</div>
+        <div class="nav-links">
+          <span class="nav-link active">Home</span>
+          <span class="nav-link">Movies</span>
+          <span class="nav-link">Series</span>
+          <span class="nav-link">Downloads</span>
         </div>
       </div>
 
-      <!-- Center: Fake search bar (UI only) -->
-      <div class="hidden sm:flex flex-1 max-w-md mx-4">
+      <div class="nav-right">
         <input
-          class="w-full px-3 py-1.5 rounded-l-full bg-slate-900 border border-slate-700 text-xs focus:outline-none focus:border-blue-500"
-          placeholder="Search (UI only)"
+          type="text"
+          class="search-input"
+          placeholder="Search"
+          id="searchInput"
         />
-        <button class="px-3 rounded-r-full bg-slate-800 border border-l-0 border-slate-700 text-xs text-slate-300">
-          🔍
-        </button>
+        <button class="btn btn-outline" id="uploadOpenBtn">Upload</button>
+        <div class="avatar">BJ</div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg"></div>
+      <div class="hero-overlay"></div>
+
+      <div class="hero-content">
+        <div class="hero-title">Naa Special Original</div>
+        <div class="hero-meta">2025 • 4K • Telugu • Action • U/A 13+</div>
+        <p class="hero-description">
+          Nee own content ni stream cheyadaniki ready aina BaluFlix platform.
+          Movies, web series, vlogs anni ikkade upload chesi chudachu.
+        </p>
+        <div class="hero-buttons">
+          <button class="btn btn-primary">
+            ▶ Play
+          </button>
+          <button class="btn btn-outline">
+            ℹ More Info
+          </button>
+        </div>
+        <div class="hero-badge-row">
+          <span class="badge">Trending #1 in India</span>
+          <span class="badge">New Episodes</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENT ROWS -->
+    <main class="content">
+      <!-- Row 1 -->
+      <section class="row">
+        <div class="row-header">
+          <h2 class="row-title">Balu Originals</h2>
+          <span class="row-link">See All ›</span>
+        </div>
+        <div class="row-scroll">
+          <div class="card" style="background-image:url('https://images.pexels.com/photos/7991310/pexels-photo-7991310.jpeg?auto=compress&cs=tinysrgb&w=800')">
+            <div class="card-info">
+              <div class="card-title">Action Short</div>
+              <div class="card-meta">10 min • Action</div>
+            </div>
+          </div>
+          <div class="card" style="background-image:url('https://images.pexels.com/photos/6898859/pexels-photo-6898859.jpeg?auto=compress&cs=tinysrgb&w=800')">
+            <div class="card-info">
+              <div class="card-title">City Nights</div>
+              <div class="card-meta">18 min • Drama</div>
+            </div>
+          </div>
+          <div class="card" style="background-image:url('https://images.pexels.com/photos/6898852/pexels-photo-6898852.jpeg?auto=compress&cs=tinysrgb&w=800')">
+            <div class="card-info">
+              <div class="card-title">Future Tech</div>
+              <div class="card-meta">12 min • Sci-Fi</div>
+            </div>
+          </div>
+          <div class="card" style="background-image:url('https://images.pexels.com/photos/6898851/pexels-photo-6898851.jpeg?auto=compress&cs=tinysrgb&w=800')">
+            <div class="card-info">
+              <div class="card-title">Neon Streets</div>
+              <div class="card-meta">8 min • Thriller</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Row 2 -->
+      <section class="row">
+        <div class="row-header">
+          <h2 class="row-title">Recently Added</h2>
+          <span class="row-link">See All ›</span>
+        </div>
+        <div class="row-scroll">
+          <div class="card" style="background-image:url('https://images.pexels.com/photos/6898855/pexels-photo-6898855.jpeg?auto=compress&cs=tinysrgb&w=800')">
+            <div class="card-info">
+              <div class="card-title">Travel Vlog #1</div>
+              <div class="card-meta">22 min • Vlog</div>
+            </div>
+          </div>
+          <div class="card" style="background-image:url('https://images.pexels.com/photos/6898857/pexels-photo-6898857.jpeg?auto=compress&cs=tinysrgb&w=800')">
+            <div class="card-info">
+              <div class="card-title">Comedy Skit</div>
+              <div class="card-meta">6 min • Comedy</div>
+            </div>
+          </div>
+          <div class="card" style="background-image:url('https://images.pexels.com/photos/6898858/pexels-photo-6898858.jpeg?auto=compress&cs=tinysrgb&w=800')">
+            <div class="card-info">
+              <div class="card-title">Music Video</div>
+              <div class="card-meta">4 min • Music</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Row 3 -->
+      <section class="row">
+        <div class="row-header">
+          <h2 class="row-title">Downloads</h2>
+          <span class="row-link">Manage ›</span>
+        </div>
+        <div class="row-scroll" id="downloadRow">
+          <!-- JS dvara later dynamic ga fill cheyochu -->
+          <div class="card" style="background-image:url('https://images.pexels.com/photos/6898856/pexels-photo-6898856.jpeg?auto=compress&cs=tinysrgb&w=800')">
+            <div class="card-info">
+              <div class="card-title">Offline Movie</div>
+              <div class="card-meta">Ready to watch</div>
+            </div>
+          </div>
+        </div>
+        <p class="hint" style="padding:0 0.9rem;">
+          Note: Real download control kosam backend logic add cheyali (Node.js / PHP / etc.).
+        </p>
+      </section>
+    </main>
+  </div>
+
+  <!-- UPLOAD MODAL -->
+  <div class="modal-backdrop" id="uploadModal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Upload New Content</div>
+        <button class="close-btn" id="uploadCloseBtn">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div>
+          <label for="titleInput">Title</label>
+          <input id="titleInput" class="modal-input" placeholder="eg: Balu Action Short 01" />
+        </div>
+
+        <div>
+          <label for="categorySelect">Category</label>
+          <select id="categorySelect" class="modal-select">
+            <option value="originals">Balu Originals</option>
+            <option value="recent">Recently Added</option>
+            <option value="downloads">Downloads</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="fileInput">Video File</label>
+          <input id="fileInput" type="file" class="modal-input" accept="video/*" />
+          <p class="hint">Currently front-end only preview. Real upload ki backend kavali.</p>
+        </div>
+
+        <div>
+          <label for="descInput">Description</label>
+          <textarea id="descInput" class="modal-textarea" placeholder="Short description..."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-outline" id="uploadCancelBtn">Cancel</button>
+          <button class="btn btn-primary" id="uploadSaveBtn">Add to UI</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const uploadOpenBtn = document.getElementById("uploadOpenBtn");
+    const uploadModal = document.getElementById("uploadModal");
+    const uploadCloseBtn = document.getElementById("uploadCloseBtn");
+    const uploadCancelBtn = document.getElementById("uploadCancelBtn");
+    const uploadSaveBtn = document.getElementById("uploadSaveBtn");
+
+    function openModal() {
+      uploadModal.style.display = "flex";
+    }
+
+    function closeModal() {
+      uploadModal.style.display = "none";
+    }
+
+    uploadOpenBtn.addEventListener("click", openModal);
+    uploadCloseBtn.addEventListener("click", closeModal);
+    uploadCancelBtn.addEventListener("click", closeModal);
+
+    // Simple front-end "add card" logic (no real upload)
+    uploadSaveBtn.addEventListener("click", () => {
+      const title = document.getElementById("titleInput").value || "New Upload";
+      const category = document.getElementById("categorySelect").value;
+      const desc = document.getElementById("descInput").value || "Uploaded content";
+
+      // ekkada image dynamic kaadu, fixed placeholder use chesthunam
+      const placeholder = "https://images.pexels.com/photos/6898855/pexels-photo-6898855.jpeg?auto=compress&cs=tinysrgb&w=800";
+
+      let rowScroll;
+      if (category === "originals") {
+        rowScroll = document.querySelectorAll(".row-scroll")[0];
+      } else if (category === "recent") {
+        rowScroll = document.querySelectorAll(".row-scroll")[1];
+      } else {
+        rowScroll = document.getElementById("downloadRow");
+      }
+
+      const card = document.createElement("div");
+      card.className = "card";
+      card.style.backgroundImage = `url('${placeholder}')`;
+      card.innerHTML = `
+        <div class="card-info">
+          <div class="card-title">${title}</div>
+          <div class="card-meta">${desc}</div>
+        </div>
+      `;
+      rowScroll.prepend(card);
+
+      // reset & close
+      document.getElementById("titleInput").value = "";
+      document.getElementById("descInput").value = "";
+      document.getElementById("fileInput").value = "";
+      closeModal();
+    });
+
+    // Backdrop click to close
+    uploadModal.addEventListener("click", (e) => {
+      if (e.target === uploadModal) closeModal();
+    });
+  </script>
+</body>
+</html>        </button>
       </div>
 
       <!-- Right: Channel button -->
