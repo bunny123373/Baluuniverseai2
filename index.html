@@ -1,2311 +1,401 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>BaluFlix</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <title>BALUJESWANTH</title>
 
-    body {
-      background-color: #000;
-      color: #fff;
-      overflow-x: hidden;
-    }
-
-    /* Scrollbar small, Netflix vibe */
-    ::-webkit-scrollbar {
-      height: 6px;
-      width: 6px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #555;
-      border-radius: 999px;
-    }
-
-    .app {
-      background: radial-gradient(circle at top, #141414 0, #000 40%);
-      min-height: 100vh;
-    }
-
-    /* NAVBAR */
-    .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.8rem 1rem;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.2), transparent);
-      backdrop-filter: blur(4px);
-    }
-
-    .nav-left {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .logo {
-      font-weight: 800;
-      font-size: 1.4rem;
-      letter-spacing: 1px;
-      color: #e50914;
-    }
-
-    .nav-links {
-      display: none;
-      gap: 0.8rem;
-      font-size: 0.9rem;
-    }
-
-    .nav-link {
-      cursor: pointer;
-      opacity: 0.8;
-    }
-    .nav-link.active,
-    .nav-link:hover {
-      opacity: 1;
-      font-weight: 600;
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .search-input {
-      background: rgba(0,0,0,0.7);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 999px;
-      padding: 0.35rem 0.8rem;
-      font-size: 0.8rem;
-      color: #fff;
-      outline: none;
-      min-width: 120px;
-    }
-
-    .btn {
-      border: none;
-      border-radius: 999px;
-      padding: 0.35rem 0.9rem;
-      font-size: 0.8rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.3rem;
-      white-space: nowrap;
-    }
-
-    .btn-primary {
-      background: #e50914;
-      color: #fff;
-      font-weight: 600;
-    }
-
-    .btn-outline {
-      background: transparent;
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-
-    .avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, #e50914, #ff9800);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.7rem;
-      font-weight: 700;
-    }
-
-    /* HERO SECTION */
-    .hero {
-      position: relative;
-      height: 55vh;
-      min-height: 280px;
-      margin-bottom: 1rem;
-    }
-
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background-image: url("https://images.pexels.com/photos/7991579/pexels-photo-7991579.jpeg?auto=compress&cs=tinysrgb&w=1200");
-      background-size: cover;
-      background-position: center;
-      filter: brightness(0.4);
-    }
-
-    .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, #000 5%, transparent 60%);
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      padding: 4.5rem 1.2rem 1.5rem;
-      max-width: 600px;
-    }
-
-    .hero-title {
-      font-size: 1.8rem;
-      font-weight: 800;
-      margin-bottom: 0.5rem;
-    }
-
-    .hero-meta {
-      font-size: 0.8rem;
-      opacity: 0.85;
-      margin-bottom: 0.8rem;
-    }
-
-    .hero-description {
-      font-size: 0.85rem;
-      max-width: 450px;
-      opacity: 0.9;
-      margin-bottom: 0.8rem;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 0.6rem;
-      margin-bottom: 0.8rem;
-    }
-
-    .hero-badge-row {
-      display: flex;
-      gap: 0.6rem;
-      font-size: 0.75rem;
-      opacity: 0.85;
-    }
-
-    .badge {
-      padding: 0.15rem 0.5rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-
-    /* ROWS */
-    .content {
-      padding: 0 0 2rem;
-      margin-top: 3rem;
-    }
-
-    .row {
-      margin-bottom: 1rem;
-      padding: 0 0.7rem;
-    }
-
-    .row-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.4rem;
-      padding: 0 0.3rem;
-    }
-
-    .row-title {
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    .row-link {
-      font-size: 0.75rem;
-      opacity: 0.7;
-    }
-
-    .row-scroll {
-      display: flex;
-      gap: 0.5rem;
-      overflow-x: auto;
-      padding-bottom: 0.4rem;
-    }
-
-    .card {
-      position: relative;
-      min-width: 120px;
-      max-width: 130px;
-      height: 180px;
-      border-radius: 0.5rem;
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      overflow: hidden;
-      cursor: pointer;
-      flex-shrink: 0;
-    }
-
-    .card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 60%);
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .card:hover::after {
-      opacity: 1;
-    }
-
-    .card-info {
-      position: absolute;
-      left: 0.4rem;
-      right: 0.4rem;
-      bottom: 0.4rem;
-      z-index: 1;
-      font-size: 0.7rem;
-    }
-
-    .card-title {
-      font-weight: 600;
-      margin-bottom: 0.1rem;
-    }
-
-    .card-meta {
-      font-size: 0.65rem;
-      opacity: 0.8;
-    }
-
-    /* Upload Modal */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 200;
-    }
-
-    .modal {
-      background: #141414;
-      border-radius: 1rem;
-      padding: 1rem;
-      width: min(90%, 420px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-      border: 1px solid rgba(255,255,255,0.09);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.7rem;
-    }
-
-    .modal-title {
-      font-size: 1rem;
-      font-weight: 600;
-    }
-
-    .close-btn {
-      border: none;
-      background: transparent;
-      color: #aaa;
-      font-size: 1.2rem;
-      cursor: pointer;
-    }
-
-    .modal-body {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      font-size: 0.8rem;
-    }
-
-    .modal-body label {
-      font-size: 0.8rem;
-      opacity: 0.9;
-    }
-
-    .modal-input,
-    .modal-select,
-    .modal-textarea {
-      width: 100%;
-      background: #000;
-      border-radius: 0.5rem;
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 0.4rem 0.6rem;
-      color: #fff;
-      font-size: 0.8rem;
-      outline: none;
-    }
-
-    .modal-textarea {
-      min-height: 60px;
-      resize: vertical;
-    }
-
-    .modal-footer {
-      margin-top: 0.5rem;
-      display: flex;
-      justify-content: flex-end;
-      gap: 0.4rem;
-    }
-
-    .hint {
-      font-size: 0.7rem;
-      opacity: 0.8;
-      margin-top: 0.3rem;
-    }
-
-    /* Responsive */
-    @media (min-width: 768px) {
-      .navbar {
-        padding: 0.7rem 3rem;
+    <!-- Netflix style CSS -->
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
       }
-      .nav-links {
+
+      body {
+        min-height: 100vh;
+        background: radial-gradient(circle at top, #3b3b3b 0, #000 55%);
+        color: #fff;
+      }
+
+      .app {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px 16px 80px;
+      }
+
+      /* Top Nav */
+      .nav {
         display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
       }
+
+      .logo {
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        color: #e50914;
+        text-transform: uppercase;
+      }
+
+      .nav-text {
+        font-size: 14px;
+        opacity: 0.85;
+      }
+
+      /* Hero / Intro card */
       .hero {
-        height: 70vh;
+        display: grid;
+        grid-template-columns: minmax(0, 2fr) minmax(0, 1.6fr);
+        gap: 24px;
+        align-items: center;
+        margin-bottom: 32px;
       }
-      .hero-content {
-        padding: 6rem 3rem 1.5rem;
-      }
-      .hero-title {
-        font-size: 2.5rem;
-      }
-      .hero-description {
-        font-size: 0.95rem;
-      }
-      .content {
-        padding: 0 1.8rem 2.5rem;
-      }
-      .card {
-        min-width: 160px;
-        height: 220px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="app">
-    <!-- NAVBAR -->
-    <nav class="navbar">
-      <div class="nav-left">
-        <div class="logo">BALUFLIX</div>
-        <div class="nav-links">
-          <span class="nav-link active">Home</span>
-          <span class="nav-link">Movies</span>
-          <span class="nav-link">Series</span>
-          <span class="nav-link">Downloads</span>
-        </div>
-      </div>
 
-      <div class="nav-right">
-        <input
-          type="text"
-          class="search-input"
-          placeholder="Search"
-          id="searchInput"
-        />
-        <button class="btn btn-outline" id="uploadOpenBtn">Upload</button>
-        <div class="avatar">BJ</div>
-      </div>
-    </nav>
+      .hero-left h1 {
+        font-size: 34px;
+        margin-bottom: 8px;
+      }
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="hero-bg"></div>
-      <div class="hero-overlay"></div>
+      .hero-left h4 {
+        font-weight: 500;
+        color: #e5e5e5;
+        margin-bottom: 16px;
+      }
 
-      <div class="hero-content">
-        <div class="hero-title">Naa Special Original</div>
-        <div class="hero-meta">2025 • 4K • Telugu • Action • U/A 13+</div>
-        <p class="hero-description">
-          Nee own content ni stream cheyadaniki ready aina BaluFlix platform.
-          Movies, web series, vlogs anni ikkade upload chesi chudachu.
-        </p>
-        <div class="hero-buttons">
-          <button class="btn btn-primary">
-            ▶ Play
-          </button>
-          <button class="btn btn-outline">
-            ℹ More Info
-          </button>
-        </div>
-        <div class="hero-badge-row">
-          <span class="badge">Trending #1 in India</span>
-          <span class="badge">New Episodes</span>
-        </div>
-      </div>
-    </section>
+      .hero-left p {
+        margin-bottom: 8px;
+        color: #d0d0d0;
+      }
 
-    <!-- CONTENT ROWS -->
-    <main class="content">
-      <!-- Row 1 -->
-      <section class="row">
-        <div class="row-header">
-          <h2 class="row-title">Balu Originals</h2>
-          <span class="row-link">See All ›</span>
+      .hero-tag {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(229, 9, 20, 0.15);
+        border: 1px solid #e50914;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .hero-right {
+        background: linear-gradient(135deg, #181818, #111);
+        border-radius: 16px;
+        padding: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+      }
+
+      .hero-right img {
+        width: 100%;
+        border-radius: 10px;
+        display: block;
+        margin-bottom: 10px;
+        object-fit: cover;
+        max-height: 220px;
+      }
+
+      .hero-right p {
+        font-size: 14px;
+        color: #e5e5e5;
+        margin-bottom: 6px;
+      }
+
+      .hero-right small {
+        font-size: 11px;
+        opacity: 0.7;
+      }
+
+      /* Video section */
+      .video-section {
+        margin-bottom: 32px;
+      }
+
+      .video-section h2 {
+        font-size: 20px;
+        margin-bottom: 12px;
+      }
+
+      .video-card {
+        background: #181818;
+        border-radius: 16px;
+        padding: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.7);
+      }
+
+      .video-card iframe {
+        width: 100%;
+        border-radius: 10px;
+        border: none;
+        display: block;
+      }
+
+      .video-card p {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #e5e5e5;
+      }
+
+      /* Contact card */
+      .contact-section h1 {
+        font-size: 24px;
+        margin-bottom: 12px;
+      }
+
+      .contact-card {
+        background: #181818;
+        border-radius: 16px;
+        padding: 18px 16px 20px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      form {
+        display: grid;
+        gap: 12px;
+        font-size: 14px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 4px;
+        color: #e5e5e5;
+      }
+
+      input[type="text"],
+      input[type="email"] {
+        width: 100%;
+        padding: 8px 10px;
+        border-radius: 6px;
+        border: 1px solid #333;
+        background: #101010;
+        color: #fff;
+      }
+
+      .field-group {
+        margin-bottom: 4px;
+      }
+
+      .inline-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+        margin-top: 2px;
+      }
+
+      .inline-options label {
+        margin-bottom: 0;
+      }
+
+      input[type="radio"] {
+        margin-right: 4px;
+        accent-color: #e50914;
+      }
+
+      /* Toast (Netflix style message) */
+      #toast {
+        position: fixed;
+        bottom: 22px;
+        left: 50%;
+        transform: translateX(-50%) translateY(120%);
+        background: rgba(229, 9, 20, 0.94);
+        color: #fff;
+        padding: 14px 22px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        letter-spacing: 0.4px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+        opacity: 0;
+        transition: 0.35s ease;
+        z-index: 9999;
+        max-width: 90%;
+        text-align: left;
+      }
+
+      #toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      @media (max-width: 720px) {
+        .hero {
+          grid-template-columns: minmax(0, 1fr);
+        }
+
+        .hero-right {
+          order: -1;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="app">
+      <!-- Top Navbar -->
+      <header class="nav">
+        <div class="logo">baluflix</div>
+        <div class="nav-text">follow more</div>
+      </header>
+
+      <!-- HERO SECTION -->
+      <section class="hero">
+        <div class="hero-left">
+          <h1>baluflix</h1>
+          <h4>follow more</h4>
+
+          <p>hello peoples how are you</p>
+          <p>this website is movies upload movies illigal</p>
+
+          <span class="hero-tag">balujeswanth original page</span>
         </div>
-        <div class="row-scroll">
-          <div class="card" style="background-image:url('https://images.pexels.com/photos/7991310/pexels-photo-7991310.jpeg?auto=compress&cs=tinysrgb&w=800')">
-            <div class="card-info">
-              <div class="card-title">Action Short</div>
-              <div class="card-meta">10 min • Action</div>
-            </div>
-          </div>
-          <div class="card" style="background-image:url('https://images.pexels.com/photos/6898859/pexels-photo-6898859.jpeg?auto=compress&cs=tinysrgb&w=800')">
-            <div class="card-info">
-              <div class="card-title">City Nights</div>
-              <div class="card-meta">18 min • Drama</div>
-            </div>
-          </div>
-          <div class="card" style="background-image:url('https://images.pexels.com/photos/6898852/pexels-photo-6898852.jpeg?auto=compress&cs=tinysrgb&w=800')">
-            <div class="card-info">
-              <div class="card-title">Future Tech</div>
-              <div class="card-meta">12 min • Sci-Fi</div>
-            </div>
-          </div>
-          <div class="card" style="background-image:url('https://images.pexels.com/photos/6898851/pexels-photo-6898851.jpeg?auto=compress&cs=tinysrgb&w=800')">
-            <div class="card-info">
-              <div class="card-title">Neon Streets</div>
-              <div class="card-meta">8 min • Thriller</div>
-            </div>
-          </div>
-        </div>
+
+        <aside class="hero-right">
+          <img src="IMG_20251024_090331_363.jpeg" alt="Balujeswanth image" />
+          <p>gadaparai my own video</p>
+          <small>scroll down to watch &amp; contact me</small>
+        </aside>
       </section>
 
-      <!-- Row 2 -->
-      <section class="row">
-        <div class="row-header">
-          <h2 class="row-title">Recently Added</h2>
-          <span class="row-link">See All ›</span>
-        </div>
-        <div class="row-scroll">
-          <div class="card" style="background-image:url('https://images.pexels.com/photos/6898855/pexels-photo-6898855.jpeg?auto=compress&cs=tinysrgb&w=800')">
-            <div class="card-info">
-              <div class="card-title">Travel Vlog #1</div>
-              <div class="card-meta">22 min • Vlog</div>
-            </div>
-          </div>
-          <div class="card" style="background-image:url('https://images.pexels.com/photos/6898857/pexels-photo-6898857.jpeg?auto=compress&cs=tinysrgb&w=800')">
-            <div class="card-info">
-              <div class="card-title">Comedy Skit</div>
-              <div class="card-meta">6 min • Comedy</div>
-            </div>
-          </div>
-          <div class="card" style="background-image:url('https://images.pexels.com/photos/6898858/pexels-photo-6898858.jpeg?auto=compress&cs=tinysrgb&w=800')">
-            <div class="card-info">
-              <div class="card-title">Music Video</div>
-              <div class="card-meta">4 min • Music</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Row 3 -->
-      <section class="row">
-        <div class="row-header">
-          <h2 class="row-title">Downloads</h2>
-          <span class="row-link">Manage ›</span>
-        </div>
-        <div class="row-scroll" id="downloadRow">
-          <!-- JS dvara later dynamic ga fill cheyochu -->
-          <div class="card" style="background-image:url('https://images.pexels.com/photos/6898856/pexels-photo-6898856.jpeg?auto=compress&cs=tinysrgb&w=800')">
-            <div class="card-info">
-              <div class="card-title">Offline Movie</div>
-              <div class="card-meta">Ready to watch</div>
-            </div>
-          </div>
-        </div>
-        <p class="hint" style="padding:0 0.9rem;">
-          Note: Real download control kosam backend logic add cheyali (Node.js / PHP / etc.).
-        </p>
-      </section>
-    </main>
-  </div>
-
-  <!-- UPLOAD MODAL -->
-  <div class="modal-backdrop" id="uploadModal">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-title">Upload New Content</div>
-        <button class="close-btn" id="uploadCloseBtn">&times;</button>
-      </div>
-
-      <div class="modal-body">
-        <div>
-          <label for="titleInput">Title</label>
-          <input id="titleInput" class="modal-input" placeholder="eg: Balu Action Short 01" />
-        </div>
-
-        <div>
-          <label for="categorySelect">Category</label>
-          <select id="categorySelect" class="modal-select">
-            <option value="originals">Balu Originals</option>
-            <option value="recent">Recently Added</option>
-            <option value="downloads">Downloads</option>
-          </select>
-        </div>
-
-        <div>
-          <label for="fileInput">Video File</label>
-          <input id="fileInput" type="file" class="modal-input" accept="video/*" />
-          <p class="hint">Currently front-end only preview. Real upload ki backend kavali.</p>
-        </div>
-
-        <div>
-          <label for="descInput">Description</label>
-          <textarea id="descInput" class="modal-textarea" placeholder="Short description..."></textarea>
-        </div>
-
-        <div class="modal-footer">
-          <button class="btn btn-outline" id="uploadCancelBtn">Cancel</button>
-          <button class="btn btn-primary" id="uploadSaveBtn">Add to UI</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    const uploadOpenBtn = document.getElementById("uploadOpenBtn");
-    const uploadModal = document.getElementById("uploadModal");
-    const uploadCloseBtn = document.getElementById("uploadCloseBtn");
-    const uploadCancelBtn = document.getElementById("uploadCancelBtn");
-    const uploadSaveBtn = document.getElementById("uploadSaveBtn");
-
-    function openModal() {
-      uploadModal.style.display = "flex";
-    }
-
-    function closeModal() {
-      uploadModal.style.display = "none";
-    }
-
-    uploadOpenBtn.addEventListener("click", openModal);
-    uploadCloseBtn.addEventListener("click", closeModal);
-    uploadCancelBtn.addEventListener("click", closeModal);
-
-    // Simple front-end "add card" logic (no real upload)
-    uploadSaveBtn.addEventListener("click", () => {
-      const title = document.getElementById("titleInput").value || "New Upload";
-      const category = document.getElementById("categorySelect").value;
-      const desc = document.getElementById("descInput").value || "Uploaded content";
-
-      // ekkada image dynamic kaadu, fixed placeholder use chesthunam
-      const placeholder = "https://images.pexels.com/photos/6898855/pexels-photo-6898855.jpeg?auto=compress&cs=tinysrgb&w=800";
-
-      let rowScroll;
-      if (category === "originals") {
-        rowScroll = document.querySelectorAll(".row-scroll")[0];
-      } else if (category === "recent") {
-        rowScroll = document.querySelectorAll(".row-scroll")[1];
-      } else {
-        rowScroll = document.getElementById("downloadRow");
-      }
-
-      const card = document.createElement("div");
-      card.className = "card";
-      card.style.backgroundImage = `url('${placeholder}')`;
-      card.innerHTML = `
-        <div class="card-info">
-          <div class="card-title">${title}</div>
-          <div class="card-meta">${desc}</div>
-        </div>
-      `;
-      rowScroll.prepend(card);
-
-      // reset & close
-      document.getElementById("titleInput").value = "";
-      document.getElementById("descInput").value = "";
-      document.getElementById("fileInput").value = "";
-      closeModal();
-    });
-
-    // Backdrop click to close
-    uploadModal.addEventListener("click", (e) => {
-      if (e.target === uploadModal) closeModal();
-    });
-  </script>
-</body>
-</html>        </button>
-      </div>
-
-      <!-- Right: Channel button -->
-      <div class="flex items-center space-x-2">
-        <a
-          href="https://youtube.com/@thedreamuniverse-26?si=x8-kqBOQrMtuXUME"
-          target="_blank"
-          class="px-3 py-1.5 rounded-full bg-red-600 hover:bg-red-700 text-[11px] font-semibold"
-        >
-          Open Channel
-        </a>
-      </div>
-    </div>
-  </header>
-
-  <!-- MAIN CONTENT -->
-  <main class="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6 space-y-6">
-
-    <!-- Channel Header -->
-    <section class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-slate-800 pb-3">
-      <div class="flex items-center space-x-3">
-        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-lg font-bold">
-          B
-        </div>
-        <div>
-          <p class="text-base font-semibold flex items-center space-x-2">
-            <span>The Dream Universe</span>
-            <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300">AI Channel</span>
-          </p>
-          <p class="text-[11px] text-slate-400">
-            AI edits • Spiritual • Fantasy • Movie vibes
-          </p>
-        </div>
-      </div>
-      <div class="flex items-center space-x-2 text-[11px] text-slate-400">
-        <span class="px-2 py-1 rounded-full bg-slate-900 border border-slate-700">Balu</span>
-        <span>Official Website View</span>
-      </div>
-    </section>
-
-    <!-- PLAYER + SIDEBAR (YouTube layout) -->
-    <section class="grid md:grid-cols-3 gap-4 md:gap-5">
-      <!-- Left: Main Player -->
-      <div class="md:col-span-2 space-y-2">
-        <div class="w-full rounded-xl overflow-hidden bg-black border border-slate-800">
+      <!-- VIDEO SECTION -->
+      <section class="video-section">
+        <h2>Featured Video</h2>
+        <div class="video-card">
           <iframe
-            class="w-full h-56 sm:h-72 md:h-80"
-            src="https://www.youtube.com/embed/7PzaHv0ql8Q"
-            title="Balu AI Christmas Edit"
-            frameborder="0"
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/zW4A32pDtZk?si=vppWE-KxJSU4F9_V"
+            title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
             allowfullscreen
           ></iframe>
+          <P>Gadaparai dimsa song</p>
+          </div>
+          </section>
+                <!-- VIDEO SECTION -->christmas
+      <section class="video-section">
+        <h2>Featured Video</h2>
+        <div class="video-card">
+       <iframe 
+       width="560" 
+       height="315" 
+       src="https://www.youtube.com/embed/7PzaHv0ql8Q?si=vRrR1zYg-jzXFfzY" 
+       title="YouTube video player" frameborder="0" 
+       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+       referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <p>Christmas Musical Video</p>
         </div>
-        <div class="space-y-1">
-          <h1 class="text-sm sm:text-base font-semibold">
-            Balu AI Christmas Edit • Magical Village
-          </h1>
-          <p class="text-[11px] text-slate-400">
-            AI-generated Christmas dreamscape created by Balu. Watch in full on YouTube for likes, comments & subscribe.
-          </p>
-          <a
-            href="https://youtu.be/7PzaHv0ql8Q"
-            target="_blank"
-            class="inline-flex items-center text-[11px] text-blue-400 hover:text-blue-300"
-          >
-            Open on YouTube for full experience →
-          </a>
-        </div>
-      </div>
-
-      <!-- Right: Up Next List -->
-      <aside class="space-y-2 max-h-[420px] md:max-h-[500px] overflow-y-auto scroll-thin">
-        <p class="text-xs font-semibold text-slate-300 mb-1">Up next</p>
-
-        <!-- Up next card 1 (current) -->
-        <a
-          href="https://youtu.be/7PzaHv0ql8Q"
-          target="_blank"
-          class="flex space-x-2 rounded-lg bg-slate-900/70 border border-slate-800 hover:border-blue-500 p-1.5"
-        >
-          <div class="w-24 h-16 rounded-md bg-cover bg-center"
-               style="background-image:url('https://i.ytimg.com/vi/7PzaHv0ql8Q/hqdefault.jpg');">
+      </section>
+      <!-- VIDEO SECTION -->
+      <section class="video-section">
+          <H2>Featured Of Video</h2>
+          <div class="video-card">
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/6jRwn-HkmSU?si=6ahemgNCvMPBYaMo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+              <P>THE MIND FOREST</P>
+</div>
+</section>
+       <!--VIDEO SECTION-SECTION-->
+       <section class="video-section">
+           <h2>Featured Of Video</h2>
+          <div class="video-card">
+              </ifram>
           </div>
-          <div class="flex-1">
-            <p class="text-[11px] font-semibold leading-snug">
-              Christmas AI Edit • Magical Village
-            </p>
-            <p class="text-[10px] text-slate-400">
-              The Dream Universe • AI
-            </p>
-            <p class="text-[10px] text-slate-500">Now playing</p>
-          </div>
-        </a>
-
-        <!-- Up next card 2 -->
-        <a
-          href="https://youtu.be/m158PjU_XS8"
-          target="_blank"
-          class="flex space-x-2 rounded-lg bg-slate-900/40 border border-slate-800 hover:border-blue-500 p-1.5"
-        >
-          <div class="w-24 h-16 rounded-md bg-cover bg-center"
-               style="background-image:url('https://i.ytimg.com/vi/m158PjU_XS8/hqdefault.jpg');">
-          </div>
-          <div class="flex-1">
-            <p class="text-[11px] font-semibold leading-snug">
-              Spiritual AI Edit • Peaceful Walk
-            </p>
-            <p class="text-[10px] text-slate-400">
-              The Dream Universe
-            </p>
-            <p class="text-[10px] text-slate-500">Watch on YouTube</p>
-          </div>
-        </a>
-
-        <!-- Placeholder Up next items (future videos) -->
-        <div class="text-[10px] text-slate-500 mt-2">
-          Future videos from your channel will still appear on YouTube.
-          Here you can keep 2–4 main AI edits as highlights.
-        </div>
-      </aside>
-    </section>
-
-    <!-- CHANNEL PLAYLIST SECTION (YouTube style embed) -->
-    <section class="space-y-2">
-      <div class="flex items-center justify-between">
-        <p class="text-sm font-semibold">BaluTube – Playlist Preview</p>
-        <p class="text-[10px] text-slate-400">
-          For full playlist, open channel on YouTube.
-        </p>
-      </div>
-
-      <div class="w-full rounded-xl overflow-hidden bg-black border border-slate-800">
-        <!-- Playlist embed – REPLACE PLAYLIST ID WHEN YOU HAVE ONE -->
-        <iframe
-          class="w-full h-64 sm:h-72"
-          src="https://www.youtube.com/embed/7PzaHv0ql8Q"
-          title="Balu AI Playlist Preview"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen
-        ></iframe>
-      </div>
-
-      <p class="text-[11px] text-slate-400">
-        Tip: Later, create a playlist on your channel and replace this embed with:
-        <code class="bg-slate-900 px-1.5 py-0.5 rounded text-[10px]">
-          https://www.youtube.com/embed/videoseries?list=YOUR_PLAYLIST_ID
-        </code>
-      </p>
-    </section>
-
-    <!-- ALL VIDEOS PREVIEW GRID -->
-    <section class="space-y-2">
-      <div class="flex items-center justify-between">
-        <p class="text-sm font-semibold">Videos from The Dream Universe</p>
-        <a
-          href="https://youtube.com/@thedreamuniverse-26?si=x8-kqBOQrMtuXUME"
-          target="_blank"
-          class="text-[11px] text-blue-400 hover:text-blue-300"
-        >
-          Open full channel →
-        </a>
-      </div>
-
-      <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
-        <!-- Card 1 -->
-        <a
-          href="https://youtu.be/7PzaHv0ql8Q"
-          target="_blank"
-          class="rounded-xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-blue-500"
-        >
-          <div
-            class="h-28 bg-cover bg-center"
-            style="background-image:url('https://i.ytimg.com/vi/7PzaHv0ql8Q/hqdefault.jpg');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="text-[11px] font-semibold leading-snug">
-              Christmas AI Edit • Magical Village
-            </p>
-            <p class="text-[10px] text-slate-400">
-              AI • Christmas • Dreamscape
-            </p>
-          </div>
-        </a>
-
-        <!-- Card 2 -->
-        <a
-          href="https://youtu.be/m158PjU_XS8"
-          target="_blank"
-          class="rounded-xl overflow-hidden bg-slate-900 border border-slate-800 hover:border-blue-500"
-        >
-          <div
-            class="h-28 bg-cover bg-center"
-            style="background-image:url('https://i.ytimg.com/vi/m158PjU_XS8/hqdefault.jpg');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="text-[11px] font-semibold leading-snug">
-              Spiritual AI Edit • Peaceful Walk
-            </p>
-            <p class="text-[10px] text-slate-400">
-              AI • Spiritual • Calm
-            </p>
-          </div>
-        </a>
-
-        <!-- Future card placeholder -->
-        <div class="rounded-xl bg-slate-900 border border-dashed border-slate-700 p-3 flex flex-col justify-center">
-          <p class="text-[11px] font-semibold mb-1">Next AI Edit</p>
-          <p class="text-[10px] text-slate-400">
-            Upload more AI videos to your YouTube channel. Just add new cards here linking to them.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="pt-4">
-      <div class="rounded-2xl bg-slate-950 border border-slate-800 p-4 sm:p-5 space-y-3">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <div>
-            <p class="text-[11px] text-slate-400 uppercase tracking-[0.12em] mb-1">
-              Contact & Collabs
-            </p>
-            <p class="text-sm font-semibold">Connect with Balu</p>
-            <p class="text-[11px] text-slate-400">
-              AI edit requests, spiritual visuals, movie vibe content.
-            </p>
-          </div>
-          <div class="text-[11px] text-slate-300">
-            <p>WhatsApp: <span class="text-slate-100">+91-7981062250</span></p>
-            <p>YouTube:
-              <a
-                href="https://youtube.com/@thedreamuniverse-26?si=x8-kqBOQrMtuXUME"
-                target="_blank"
-                class="text-blue-400"
-              >The Dream Universe</a>
-            </p>
-          </div>
-        </div>
-        <p class="text-[10px] text-slate-500">
-          All likes, comments, subscribers will still stay on YouTube. This website is your stylish front-page for your channel.
-        </p>
-      </div>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="border-t border-slate-800 py-3 bg-[#020617]">
-    <div class="max-w-6xl mx-auto px-3 sm:px-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[10px] text-slate-500">
-      <p>© <span id="year"></span> BaluTube • The Dream Universe.</p>
-      <p>Made with ❤️ + AI by Balu.</p>
-    </div>
-  </footer>
-
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-</body>
-              </html>    <div class="absolute inset-0 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none"></div>
-    <!-- Hero background image – replace URL with your poster -->
-    <div
-      class="h-[260px] sm:h-[320px] md:h-[380px] w-full bg-cover bg-center"
-      style="background-image:url('https://images.pexels.com/photos/799137/pexels-photo-799137.jpeg?auto=compress&cs=tinysrgb&w=1600');"
-    ></div>
-
-    <div class="max-w-6xl mx-auto px-4 pb-6 -mt-32 relative">
-      <div class="max-w-xl gradient-border rounded-2xl bg-black/75 p-4 sm:p-5">
-        <p class="tag-pill text-emerald-300 mb-2 flex items-center space-x-2">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span>Featured AI Edit</span>
-        </p>
-        <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-2">
-          Christmas Dreamscape • <span class="text-indigo-400">AI Short</span>
-        </h1>
-        <p class="text-sm text-slate-300 mb-4">
-          Magical Christmas village, glowing lights, soft snowfall and surreal vibes –
-          crafted by Balu using AI. Scroll down for more AI edits and movie vibes.
-        </p>
-        <div class="flex flex-wrap gap-3 text-xs">
-          <a
-            href="#ai-originals"
-            class="px-4 py-2 rounded-full bg-indigo-500 hover:bg-indigo-600 font-semibold"
-          >
-            ▶ Watch AI Originals
-          </a>
-          <a
-            href="#telugu"
-            class="px-4 py-2 rounded-full border border-slate-600 hover:border-indigo-400 text-slate-200"
-          >
-            Browse Movies
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <main class="max-w-6xl mx-auto px-4 pb-16 space-y-10">
-
-    <!-- BALU AI ORIGINALS -->
-    <section id="ai-originals" class="space-y-3">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="tag-pill text-indigo-300 mb-1">Balu AI Originals</p>
-          <h2 class="text-xl sm:text-2xl font-bold">AI Edits & Fantasy Shorts</h2>
-        </div>
-        <p class="text-[11px] text-slate-400">100% Balu’s own AI content</p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-6">
-        <!-- Original 1 – your real video -->
-        <div class="gradient-border rounded-2xl bg-black/70 p-3 sm:p-4">
-          <p class="tag-pill text-pink-300 mb-2">New • Christmas</p>
-          <h3 class="text-sm sm:text-base font-semibold mb-2">
-            Balu AI Christmas Edit
-          </h3>
-          <div class="aspect-w-16 aspect-h-9 w-full mb-3">
-            <iframe
-              class="w-full h-52 sm:h-60 rounded-xl border border-slate-800"
-              src="https://www.youtube.com/embed/7PzaHv0ql8Q"
-              title="Balu AI Christmas Edit"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <p class="text-xs text-slate-300">
-            Magical snowy village, golden lights and cozy Christmas mood created with AI.
-          </p>
-        </div>
-
-        <!-- Original 2 – placeholder, replace VIDEO_ID_2 -->
-        <div class="gradient-border rounded-2xl bg-black/70 p-3 sm:p-4">
-          <p class="tag-pill text-cyan-300 mb-2">Soon • Coming</p>
-          <h3 class="text-sm sm:text-base font-semibold mb-2">
-            Surreal Heaven Walk • AI Short
-          </h3>
-          <div class="aspect-w-16 aspect-h-9 w-full mb-3">
-            <div class="w-full h-52 sm:h-60 rounded-xl border border-dashed border-slate-700 flex items-center justify-center text-xs text-slate-500">
-              Replace this block with another YouTube iframe when your next video is ready.
+          <iframe 
+width="500"
+height="300"
+src="https://www.youtube.com/embed/ayGNy7smJug?si=ioOupfpqL6ESV8yc" 
+title="YouTube video player" 
+frameborder="0" 
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <P>Gadaparai village christmas sambaralu</p>
+                        </div>
+       </section>
+      <!-- CONTACT SECTION -->
+      <section class="contact-section">
+        <h1>CONTACT ME</h1>
+        <div class="contact-card">
+          <form action="">
+            <!-- Name -->
+            <div class="field-group">
+              <label for="name">name:</label>
+              <input type="text" id="name" name="name" />
             </div>
-          </div>
-          <p class="text-xs text-slate-300">
-            Use this slot for your next AI spiritual / fantasy short video.
-          </p>
-        </div>
-      </div>
-    </section>
 
-    <!-- TELUGU MOVIES ROW -->
-    <section id="telugu" class="space-y-3">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="tag-pill text-emerald-300 mb-1">Telugu Zone</p>
-          <h2 class="text-xl sm:text-2xl font-bold">Telugu Movies & Vibes</h2>
-        </div>
-        <p class="text-[11px] text-slate-400">Info • OTT • Balu rating</p>
-      </div>
-
-      <div class="row-scroll space-x-3 pb-1">
-        <!-- card 1 -->
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799152/pexels-photo-799152.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-emerald-300">Recently added</p>
-            <h3 class="text-xs font-semibold">Devara</h3>
-            <p class="text-[10px] text-slate-400">Action • Mass • 2024</p>
-            <p class="text-[10px] text-yellow-300">⭐ 8.5 / 10 (Balu)</p>
-          </div>
-        </article>
-
-        <!-- card 2 -->
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799127/pexels-photo-799127.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-rose-300">Top pick</p>
-            <h3 class="text-xs font-semibold">Hi Nanna</h3>
-            <p class="text-[10px] text-slate-400">Drama • Feel good</p>
-            <p class="text-[10px] text-yellow-300">⭐ 9.1 / 10 (Balu)</p>
-          </div>
-        </article>
-
-        <!-- card 3 -->
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799153/pexels-photo-799153.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-sky-300">OTT</p>
-            <h3 class="text-xs font-semibold">Family Entertainer</h3>
-            <p class="text-[10px] text-slate-400">Family • Comedy</p>
-            <p class="text-[10px] text-yellow-300">⭐ 7.6 / 10 (Balu)</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- HINDI MOVIES ROW -->
-    <section id="hindi" class="space-y-3">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="tag-pill text-red-300 mb-1">Hindi Movies & TV</p>
-          <h2 class="text-xl sm:text-2xl font-bold">Bollywood & Thrillers</h2>
-        </div>
-        <p class="text-[11px] text-slate-400">Mix of classics & new</p>
-      </div>
-
-      <div class="row-scroll space-x-3 pb-1">
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799158/pexels-photo-799158.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-red-300">Recently added</p>
-            <h3 class="text-xs font-semibold">Action Spy Movie</h3>
-            <p class="text-[10px] text-slate-400">Action • Spy</p>
-          </div>
-        </article>
-
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799116/pexels-photo-799116.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-amber-300">Classic</p>
-            <h3 class="text-xs font-semibold">Courtroom Drama</h3>
-            <p class="text-[10px] text-slate-400">Drama • Social</p>
-          </div>
-        </article>
-
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799124/pexels-photo-799124.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-rose-300">Thriller</p>
-            <h3 class="text-xs font-semibold">Psychological Thriller</h3>
-            <p class="text-[10px] text-slate-400">Dark • Intense</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ANIME ROW -->
-    <section id="anime" class="space-y-3">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="tag-pill text-yellow-300 mb-1">Anime Corner</p>
-          <h2 class="text-xl sm:text-2xl font-bold">Anime Dubbed in English</h2>
-        </div>
-        <p class="text-[11px] text-slate-400">Colorful • High energy</p>
-      </div>
-
-      <div class="row-scroll space-x-3 pb-1">
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799129/pexels-photo-799129.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-yellow-300">New episode</p>
-            <h3 class="text-xs font-semibold">Battle Academy</h3>
-            <p class="text-[10px] text-slate-400">Action • Fantasy</p>
-          </div>
-        </article>
-
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799130/pexels-photo-799130.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-pink-300">Romance</p>
-            <h3 class="text-xs font-semibold">My Happy Universe</h3>
-            <p class="text-[10px] text-slate-400">Slice of life</p>
-          </div>
-        </article>
-
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799131/pexels-photo-799131.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-sky-300">Fantasy</p>
-            <h3 class="text-xs font-semibold">Spirit Flowers</h3>
-            <p class="text-[10px] text-slate-400">Fantasy • Drama</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="pt-8">
-      <div class="gradient-border rounded-2xl bg-black/80 p-5 sm:p-6 space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
-          <div>
-            <p class="tag-pill text-indigo-300 mb-1">Contact</p>
-            <h2 class="text-xl sm:text-2xl font-bold">Connect with Balu</h2>
-            <p class="text-sm text-slate-300">
-              Movie suggestions, AI edit ideas, collabs – ping me anytime.
-            </p>
-          </div>
-          <div class="text-xs text-slate-400">
-            <p>WhatsApp: <span class="text-slate-100">+91-7981062250</span></p>
-            <p>YouTube:
-              <a
-                href="https://youtube.com/@thedreamuniverse-26?si=x8-kqBOQrMtuXUME"
-                target="_blank"
-                class="text-indigo-300"
-              >The Dream Universe</a>
-            </p>
-          </div>
-        </div>
-
-        <form class="grid sm:grid-cols-2 gap-4 text-sm">
-          <div class="space-y-2">
-            <div>
-              <label class="block text-slate-300 mb-1">Name</label>
-              <input
-                type="text"
-                class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:border-indigo-400"
-                placeholder="Your name" />
+            <!-- Email -->
+            <div class="field-group">
+              <label for="email">email:</label>
+              <input type="email" id="email" name="email" />
             </div>
-            <div>
-              <label class="block text-slate-300 mb-1">Email or Insta ID</label>
-              <input
-                type="text"
-                class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:border-indigo-400"
-                placeholder="you@example.com / @yourid" />
+
+            <!-- Gender -->
+            <div class="field-group">
+              <b>choose your gender</b>
+              <div class="inline-options">
+                <label for="male">
+                  <input
+                    type="radio"
+                    id="male"
+                    name="gender"
+                    value="male"
+                  />
+                  male
+                </label>
+
+                <label for="female">
+                  <input
+                    type="radio"
+                    id="female"
+                    name="gender"
+                    value="female"
+                  />
+                  female
+                </label>
+              </div>
             </div>
-          </div>
-          <div class="space-y-2">
-            <label class="block text-slate-300 mb-1">Message</label>
-            <textarea
-              rows="4"
-              class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:border-indigo-400"
-              placeholder="Example: Review this movie / Make AI edit like this scene..."></textarea>
-            <button
-              type="button"
-              class="mt-2 w-full px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-600 font-semibold"
-            >
-              Send (Use WhatsApp/YouTube in real)
-            </button>
-            <p class="text-[10px] text-slate-500 mt-1">
-              Form is visual only. Use WhatsApp or YouTube comments to actually contact.
-            </p>
-          </div>
-        </form>
-      </div>
-    </section>
-  </main>
 
-  <!-- FOOTER -->
-  <footer class="border-t border-slate-800 py-4 bg-black/80">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-400">
-      <p>© <span id="year"></span> Balu Universe Movies. All rights reserved.</p>
-      <p>Made with ❤️ + Cinema + AI by Balu.</p>
-    </div>
-  </footer>
+            <!-- Coding interest -->
+            <div class="field-group">
+              <b>coding interest</b>
+              <div class="inline-options">
+                <label for="coding-yes">
+                  <input
+                    type="radio"
+                    id="coding-yes"
+                    name="coding_interest"
+                    value="yes"
+                  />
+                  yes
+                </label>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-</body>
-</html>    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-xl font-extrabold">
-          B
-        </div>
-        <div>
-          <p class="text-sm font-semibold tracking-wide">Balu Universe Movies</p>
-          <p class="text-[11px] text-slate-400">AI Edits • Movie Vibe Hub</p>
-        </div>
-      </div>
-
-      <nav class="hidden md:flex items-center space-x-5 text-xs font-medium text-slate-200">
-        <a href="#home" class="hover:text-indigo-400">Home</a>
-        <a href="#ai-originals" class="hover:text-indigo-400">Balu AI Originals</a>
-        <a href="#telugu" class="hover:text-indigo-400">Telugu</a>
-        <a href="#hindi" class="hover:text-indigo-400">Hindi</a>
-        <a href="#anime" class="hover:text-indigo-400">Anime</a>
-        <a href="#contact" class="hover:text-indigo-400">Contact</a>
-        <a
-          href="https://youtube.com/@thedreamuniverse-26?si=x8-kqBOQrMtuXUME"
-          target="_blank"
-          class="px-3 py-1.5 rounded-full bg-red-600 hover:bg-red-700 text-[11px] font-semibold"
-        >
-          YouTube
-        </a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <section id="home" class="relative">
-    <div class="absolute inset-0 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none"></div>
-    <!-- Hero background image – replace URL with your poster -->
-    <div
-      class="h-[260px] sm:h-[320px] md:h-[380px] w-full bg-cover bg-center"
-      style="background-image:url('https://images.pexels.com/photos/799137/pexels-photo-799137.jpeg?auto=compress&cs=tinysrgb&w=1600');"
-    ></div>
-
-    <div class="max-w-6xl mx-auto px-4 pb-6 -mt-32 relative">
-      <div class="max-w-xl gradient-border rounded-2xl bg-black/75 p-4 sm:p-5">
-        <p class="tag-pill text-emerald-300 mb-2 flex items-center space-x-2">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span>Featured AI Edit</span>
-        </p>
-        <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-2">
-          Christmas Dreamscape • <span class="text-indigo-400">AI Short</span>
-        </h1>
-        <p class="text-sm text-slate-300 mb-4">
-          Magical Christmas village, glowing lights, soft snowfall and surreal vibes –
-          crafted by Balu using AI. Scroll down for more AI edits and movie vibes.
-        </p>
-        <div class="flex flex-wrap gap-3 text-xs">
-          <a
-            href="#ai-originals"
-            class="px-4 py-2 rounded-full bg-indigo-500 hover:bg-indigo-600 font-semibold"
-          >
-            ▶ Watch AI Originals
-          </a>
-          <a
-            href="#telugu"
-            class="px-4 py-2 rounded-full border border-slate-600 hover:border-indigo-400 text-slate-200"
-          >
-            Browse Movies
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <main class="max-w-6xl mx-auto px-4 pb-16 space-y-10">
-
-    <!-- BALU AI ORIGINALS -->
-    <section id="ai-originals" class="space-y-3">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="tag-pill text-indigo-300 mb-1">Balu AI Originals</p>
-          <h2 class="text-xl sm:text-2xl font-bold">AI Edits & Fantasy Shorts</h2>
-        </div>
-        <p class="text-[11px] text-slate-400">100% Balu’s own AI content</p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-6">
-        <!-- Original 1 – your real video -->
-        <div class="gradient-border rounded-2xl bg-black/70 p-3 sm:p-4">
-          <p class="tag-pill text-pink-300 mb-2">New • Christmas</p>
-          <h3 class="text-sm sm:text-base font-semibold mb-2">
-            Balu AI Christmas Edit
-          </h3>
-          <div class="aspect-w-16 aspect-h-9 w-full mb-3">
-            <iframe
-              class="w-full h-52 sm:h-60 rounded-xl border border-slate-800"
-              src="https://www.youtube.com/embed/7PzaHv0ql8Q"
-              title="Balu AI Christmas Edit"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <p class="text-xs text-slate-300">
-            Magical snowy village, golden lights and cozy Christmas mood created with AI.
-          </p>
-        </div>
-
-        <!-- Original 2 – placeholder, replace VIDEO_ID_2 -->
-        <div class="gradient-border rounded-2xl bg-black/70 p-3 sm:p-4">
-          <p class="tag-pill text-cyan-300 mb-2">Soon • Coming</p>
-          <h3 class="text-sm sm:text-base font-semibold mb-2">
-            Surreal Heaven Walk • AI Short
-          </h3>
-          <div class="aspect-w-16 aspect-h-9 w-full mb-3">
-            <div class="w-full h-52 sm:h-60 rounded-xl border border-dashed border-slate-700 flex items-center justify-center text-xs text-slate-500">
-              Replace this block with another YouTube iframe when your next video is ready.
+                <label for="coding-no">
+                  <input
+                    type="radio"
+                    id="coding-no"
+                    name="coding_interest"
+                    value="no"
+                  />
+                  no
+                </label>
+              </div>
             </div>
-          </div>
-          <p class="text-xs text-slate-300">
-            Use this slot for your next AI spiritual / fantasy short video.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- TELUGU MOVIES ROW -->
-    <section id="telugu" class="space-y-3">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="tag-pill text-emerald-300 mb-1">Telugu Zone</p>
-          <h2 class="text-xl sm:text-2xl font-bold">Telugu Movies & Vibes</h2>
-        </div>
-        <p class="text-[11px] text-slate-400">Info • OTT • Balu rating</p>
-      </div>
-
-      <div class="row-scroll space-x-3 pb-1">
-        <!-- card 1 -->
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799152/pexels-photo-799152.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-emerald-300">Recently added</p>
-            <h3 class="text-xs font-semibold">Devara</h3>
-            <p class="text-[10px] text-slate-400">Action • Mass • 2024</p>
-            <p class="text-[10px] text-yellow-300">⭐ 8.5 / 10 (Balu)</p>
-          </div>
-        </article>
-
-        <!-- card 2 -->
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799127/pexels-photo-799127.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-rose-300">Top pick</p>
-            <h3 class="text-xs font-semibold">Hi Nanna</h3>
-            <p class="text-[10px] text-slate-400">Drama • Feel good</p>
-            <p class="text-[10px] text-yellow-300">⭐ 9.1 / 10 (Balu)</p>
-          </div>
-        </article>
-
-        <!-- card 3 -->
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799153/pexels-photo-799153.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-sky-300">OTT</p>
-            <h3 class="text-xs font-semibold">Family Entertainer</h3>
-            <p class="text-[10px] text-slate-400">Family • Comedy</p>
-            <p class="text-[10px] text-yellow-300">⭐ 7.6 / 10 (Balu)</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- HINDI MOVIES ROW -->
-    <section id="hindi" class="space-y-3">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="tag-pill text-red-300 mb-1">Hindi Movies & TV</p>
-          <h2 class="text-xl sm:text-2xl font-bold">Bollywood & Thrillers</h2>
-        </div>
-        <p class="text-[11px] text-slate-400">Mix of classics & new</p>
-      </div>
-
-      <div class="row-scroll space-x-3 pb-1">
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799158/pexels-photo-799158.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-red-300">Recently added</p>
-            <h3 class="text-xs font-semibold">Action Spy Movie</h3>
-            <p class="text-[10px] text-slate-400">Action • Spy</p>
-          </div>
-        </article>
-
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799116/pexels-photo-799116.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-amber-300">Classic</p>
-            <h3 class="text-xs font-semibold">Courtroom Drama</h3>
-            <p class="text-[10px] text-slate-400">Drama • Social</p>
-          </div>
-        </article>
-
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799124/pexels-photo-799124.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-rose-300">Thriller</p>
-            <h3 class="text-xs font-semibold">Psychological Thriller</h3>
-            <p class="text-[10px] text-slate-400">Dark • Intense</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ANIME ROW -->
-    <section id="anime" class="space-y-3">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="tag-pill text-yellow-300 mb-1">Anime Corner</p>
-          <h2 class="text-xl sm:text-2xl font-bold">Anime Dubbed in English</h2>
-        </div>
-        <p class="text-[11px] text-slate-400">Colorful • High energy</p>
-      </div>
-
-      <div class="row-scroll space-x-3 pb-1">
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799129/pexels-photo-799129.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-yellow-300">New episode</p>
-            <h3 class="text-xs font-semibold">Battle Academy</h3>
-            <p class="text-[10px] text-slate-400">Action • Fantasy</p>
-          </div>
-        </article>
-
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799130/pexels-photo-799130.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-pink-300">Romance</p>
-            <h3 class="text-xs font-semibold">My Happy Universe</h3>
-            <p class="text-[10px] text-slate-400">Slice of life</p>
-          </div>
-        </article>
-
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799131/pexels-photo-799131.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-sky-300">Fantasy</p>
-            <h3 class="text-xs font-semibold">Spirit Flowers</h3>
-            <p class="text-[10px] text-slate-400">Fantasy • Drama</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="pt-8">
-      <div class="gradient-border rounded-2xl bg-black/80 p-5 sm:p-6 space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
-          <div>
-            <p class="tag-pill text-indigo-300 mb-1">Contact</p>
-            <h2 class="text-xl sm:text-2xl font-bold">Connect with Balu</h2>
-            <p class="text-sm text-slate-300">
-              Movie suggestions, AI edit ideas, collabs – ping me anytime.
-            </p>
-          </div>
-          <div class="text-xs text-slate-400">
-            <p>WhatsApp: <span class="text-slate-100">+91-7981062250</span></p>
-            <p>YouTube:
-              <a
-                href="https://youtube.com/@thedreamuniverse-26?si=x8-kqBOQrMtuXUME"
-                target="_blank"
-                class="text-indigo-300"
-              >The Dream Universe</a>
-            </p>
-          </div>
-        </div>
-
-        <form class="grid sm:grid-cols-2 gap-4 text-sm">
-          <div class="space-y-2">
-            <div>
-              <label class="block text-slate-300 mb-1">Name</label>
-              <input
-                type="text"
-                class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:border-indigo-400"
-                placeholder="Your name" />
-            </div>
-            <div>
-              <label class="block text-slate-300 mb-1">Email or Insta ID</label>
-              <input
-                type="text"
-                class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:border-indigo-400"
-                placeholder="you@example.com / @yourid" />
-            </div>
-          </div>
-          <div class="space-y-2">
-            <label class="block text-slate-300 mb-1">Message</label>
-            <textarea
-              rows="4"
-              class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:border-indigo-400"
-              placeholder="Example: Review this movie / Make AI edit like this scene..."></textarea>
-            <button
-              type="button"
-              class="mt-2 w-full px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-600 font-semibold"
-            >
-              Send (Use WhatsApp/YouTube in real)
-            </button>
-            <p class="text-[10px] text-slate-500 mt-1">
-              Form is visual only. Use WhatsApp or YouTube comments to actually contact.
-            </p>
-          </div>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="border-t border-slate-800 py-4 bg-black/80">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-400">
-      <p>© <span id="year"></span> Balu Universe Movies. All rights reserved.</p>
-      <p>Made with ❤️ + Cinema + AI by Balu.</p>
-    </div>
-  </footer>
-
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-</body>
-  </html><!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Balu Universe Movies</title>
-
-  <!-- Tailwind CSS CDN -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
-    rel="stylesheet"
-  />
-
-  <style>
-    html {
-      scroll-behavior: smooth;
-    }
-    body {
-      background: #05060a;
-      color: #f9fafb;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-    .row-scroll {
-      display: flex;
-      overflow-x: auto;
-      scrollbar-width: thin;
-      scrollbar-color: #4b5563 #020617;
-    }
-    .row-scroll::-webkit-scrollbar {
-      height: 6px;
-    }
-    .row-scroll::-webkit-scrollbar-track {
-      background: #020617;
-    }
-    .row-scroll::-webkit-scrollbar-thumb {
-      background: #4b5563;
-      border-radius: 999px;
-    }
-    .poster-card {
-      min-width: 170px;
-      max-width: 170px;
-      border-radius: 0.75rem;
-      overflow: hidden;
-      background: #020617;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .poster-card:hover {
-      transform: translateY(-6px) scale(1.03);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.75);
-    }
-    .tag-pill {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-    }
-    .gradient-border {
-      border: 1px solid transparent;
-      background-image:
-        linear-gradient(#020617, #020617),
-        linear-gradient(135deg, #4f46e5, #ec4899);
-      background-origin: border-box;
-      background-clip: padding-box, border-box;
-    }
-  </style>
-</head>
-<body class="min-h-screen">
-
-  <!-- NAVBAR -->
-  <header class="sticky top-0 z-30 bg-gradient-to-b from-black/80 via-black/60 to-transparent border-b border-slate-800">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <div class="flex items-center space-x-3">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center text-xl font-extrabold">
-          B
-        </div>
-        <div>
-          <p class="text-sm font-semibold tracking-wide">Balu Universe Movies</p>
-          <p class="text-[11px] text-slate-400">AI Edits • Movie Vibe Hub</p>
-        </div>
-      </div>
-
-      <nav class="hidden md:flex items-center space-x-5 text-xs font-medium text-slate-200">
-        <a href="#home" class="hover:text-indigo-400">Home</a>
-        <a href="#ai-originals" class="hover:text-indigo-400">Balu AI Originals</a>
-        <a href="#telugu" class="hover:text-indigo-400">Telugu</a>
-        <a href="#hindi" class="hover:text-indigo-400">Hindi</a>
-        <a href="#anime" class="hover:text-indigo-400">Anime</a>
-        <a href="#contact" class="hover:text-indigo-400">Contact</a>
-        <a
-          href="https://youtube.com/@thedreamuniverse-26?si=x8-kqBOQrMtuXUME"
-          target="_blank"
-          class="px-3 py-1.5 rounded-full bg-red-600 hover:bg-red-700 text-[11px] font-semibold"
-        >
-          YouTube
-        </a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <section id="home" class="relative">
-    <div class="absolute inset-0 bg-gradient-to-b from-black via-black/70 to-transparent pointer-events-none"></div>
-    <!-- Hero background image – replace URL with your poster -->
-    <div
-      class="h-[260px] sm:h-[320px] md:h-[380px] w-full bg-cover bg-center"
-      style="background-image:url('https://images.pexels.com/photos/799137/pexels-photo-799137.jpeg?auto=compress&cs=tinysrgb&w=1600');"
-    ></div>
-
-    <div class="max-w-6xl mx-auto px-4 pb-6 -mt-32 relative">
-      <div class="max-w-xl gradient-border rounded-2xl bg-black/75 p-4 sm:p-5">
-        <p class="tag-pill text-emerald-300 mb-2 flex items-center space-x-2">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-          <span>Featured AI Edit</span>
-        </p>
-        <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-2">
-          Christmas Dreamscape • <span class="text-indigo-400">AI Short</span>
-        </h1>
-        <p class="text-sm text-slate-300 mb-4">
-          Magical Christmas village, glowing lights, soft snowfall and surreal vibes –
-          crafted by Balu using AI. Scroll down for more AI edits and movie vibes.
-        </p>
-        <div class="flex flex-wrap gap-3 text-xs">
-          <a
-            href="#ai-originals"
-            class="px-4 py-2 rounded-full bg-indigo-500 hover:bg-indigo-600 font-semibold"
-          >
-            ▶ Watch AI Originals
-          </a>
-          <a
-            href="#telugu"
-            class="px-4 py-2 rounded-full border border-slate-600 hover:border-indigo-400 text-slate-200"
-          >
-            Browse Movies
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <main class="max-w-6xl mx-auto px-4 pb-16 space-y-10">
-
-    <!-- BALU AI ORIGINALS -->
-    <section id="ai-originals" class="space-y-3">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="tag-pill text-indigo-300 mb-1">Balu AI Originals</p>
-          <h2 class="text-xl sm:text-2xl font-bold">AI Edits & Fantasy Shorts</h2>
-        </div>
-        <p class="text-[11px] text-slate-400">100% Balu’s own AI content</p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-6">
-        <!-- Original 1 – your real video -->
-        <div class="gradient-border rounded-2xl bg-black/70 p-3 sm:p-4">
-          <p class="tag-pill text-pink-300 mb-2">New • Christmas</p>
-          <h3 class="text-sm sm:text-base font-semibold mb-2">
-            Balu AI Christmas Edit
-          </h3>
-          <div class="aspect-w-16 aspect-h-9 w-full mb-3">
-            <iframe
-              class="w-full h-52 sm:h-60 rounded-xl border border-slate-800"
-              src="https://www.youtube.com/embed/7PzaHv0ql8Q"
-              title="Balu AI Christmas Edit"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <p class="text-xs text-slate-300">
-            Magical snowy village, golden lights and cozy Christmas mood created with AI.
-          </p>
-        </div>
-
-        <!-- Original 2 – placeholder, replace VIDEO_ID_2 -->
-        <div class="gradient-border rounded-2xl bg-black/70 p-3 sm:p-4">
-          <p class="tag-pill text-cyan-300 mb-2">Soon • Coming</p>
-          <h3 class="text-sm sm:text-base font-semibold mb-2">
-            Surreal Heaven Walk • AI Short
-          </h3>
-          <div class="aspect-w-16 aspect-h-9 w-full mb-3">
-            <div class="w-full h-52 sm:h-60 rounded-xl border border-dashed border-slate-700 flex items-center justify-center text-xs text-slate-500">
-              Replace this block with another YouTube iframe when your next video is ready.
-            </div>
-          </div>
-          <p class="text-xs text-slate-300">
-            Use this slot for your next AI spiritual / fantasy short video.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- TELUGU MOVIES ROW -->
-    <section id="telugu" class="space-y-3">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="tag-pill text-emerald-300 mb-1">Telugu Zone</p>
-          <h2 class="text-xl sm:text-2xl font-bold">Telugu Movies & Vibes</h2>
-        </div>
-        <p class="text-[11px] text-slate-400">Info • OTT • Balu rating</p>
-      </div>
-
-      <div class="row-scroll space-x-3 pb-1">
-        <!-- card 1 -->
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799152/pexels-photo-799152.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-emerald-300">Recently added</p>
-            <h3 class="text-xs font-semibold">Devara</h3>
-            <p class="text-[10px] text-slate-400">Action • Mass • 2024</p>
-            <p class="text-[10px] text-yellow-300">⭐ 8.5 / 10 (Balu)</p>
-          </div>
-        </article>
-
-        <!-- card 2 -->
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799127/pexels-photo-799127.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-rose-300">Top pick</p>
-            <h3 class="text-xs font-semibold">Hi Nanna</h3>
-            <p class="text-[10px] text-slate-400">Drama • Feel good</p>
-            <p class="text-[10px] text-yellow-300">⭐ 9.1 / 10 (Balu)</p>
-          </div>
-        </article>
-
-        <!-- card 3 -->
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799153/pexels-photo-799153.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-sky-300">OTT</p>
-            <h3 class="text-xs font-semibold">Family Entertainer</h3>
-            <p class="text-[10px] text-slate-400">Family • Comedy</p>
-            <p class="text-[10px] text-yellow-300">⭐ 7.6 / 10 (Balu)</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- HINDI MOVIES ROW -->
-    <section id="hindi" class="space-y-3">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="tag-pill text-red-300 mb-1">Hindi Movies & TV</p>
-          <h2 class="text-xl sm:text-2xl font-bold">Bollywood & Thrillers</h2>
-        </div>
-        <p class="text-[11px] text-slate-400">Mix of classics & new</p>
-      </div>
-
-      <div class="row-scroll space-x-3 pb-1">
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799158/pexels-photo-799158.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-red-300">Recently added</p>
-            <h3 class="text-xs font-semibold">Action Spy Movie</h3>
-            <p class="text-[10px] text-slate-400">Action • Spy</p>
-          </div>
-        </article>
-
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799116/pexels-photo-799116.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-amber-300">Classic</p>
-            <h3 class="text-xs font-semibold">Courtroom Drama</h3>
-            <p class="text-[10px] text-slate-400">Drama • Social</p>
-          </div>
-        </article>
-
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799124/pexels-photo-799124.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-rose-300">Thriller</p>
-            <h3 class="text-xs font-semibold">Psychological Thriller</h3>
-            <p class="text-[10px] text-slate-400">Dark • Intense</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ANIME ROW -->
-    <section id="anime" class="space-y-3">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="tag-pill text-yellow-300 mb-1">Anime Corner</p>
-          <h2 class="text-xl sm:text-2xl font-bold">Anime Dubbed in English</h2>
-        </div>
-        <p class="text-[11px] text-slate-400">Colorful • High energy</p>
-      </div>
-
-      <div class="row-scroll space-x-3 pb-1">
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799129/pexels-photo-799129.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-yellow-300">New episode</p>
-            <h3 class="text-xs font-semibold">Battle Academy</h3>
-            <p class="text-[10px] text-slate-400">Action • Fantasy</p>
-          </div>
-        </article>
-
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799130/pexels-photo-799130.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-pink-300">Romance</p>
-            <h3 class="text-xs font-semibold">My Happy Universe</h3>
-            <p class="text-[10px] text-slate-400">Slice of life</p>
-          </div>
-        </article>
-
-        <article class="poster-card gradient-border">
-          <div
-            class="h-40 bg-cover bg-center"
-            style="background-image:url('https://images.pexels.com/photos/799131/pexels-photo-799131.jpeg?auto=compress&cs=tinysrgb&w=800');"
-          ></div>
-          <div class="p-2.5 space-y-1">
-            <p class="tag-pill text-[10px] text-sky-300">Fantasy</p>
-            <h3 class="text-xs font-semibold">Spirit Flowers</h3>
-            <p class="text-[10px] text-slate-400">Fantasy • Drama</p>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="pt-8">
-      <div class="gradient-border rounded-2xl bg-black/80 p-5 sm:p-6 space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
-          <div>
-            <p class="tag-pill text-indigo-300 mb-1">Contact</p>
-            <h2 class="text-xl sm:text-2xl font-bold">Connect with Balu</h2>
-            <p class="text-sm text-slate-300">
-              Movie suggestions, AI edit ideas, collabs – ping me anytime.
-            </p>
-          </div>
-          <div class="text-xs text-slate-400">
-            <p>WhatsApp: <span class="text-slate-100">+91-7981062250</span></p>
-            <p>YouTube:
-              <a
-                href="https://youtube.com/@thedreamuniverse-26?si=x8-kqBOQrMtuXUME"
-                target="_blank"
-                class="text-indigo-300"
-              >The Dream Universe</a>
-            </p>
-          </div>
-        </div>
-
-        <form class="grid sm:grid-cols-2 gap-4 text-sm">
-          <div class="space-y-2">
-            <div>
-              <label class="block text-slate-300 mb-1">Name</label>
-              <input
-                type="text"
-                class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:border-indigo-400"
-                placeholder="Your name" />
-            </div>
-            <div>
-              <label class="block text-slate-300 mb-1">Email or Insta ID</label>
-              <input
-                type="text"
-                class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:border-indigo-400"
-                placeholder="you@example.com / @yourid" />
-            </div>
-          </div>
-          <div class="space-y-2">
-            <label class="block text-slate-300 mb-1">Message</label>
-            <textarea
-              rows="4"
-              class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 focus:outline-none focus:border-indigo-400"
-              placeholder="Example: Review this movie / Make AI edit like this scene..."></textarea>
-            <button
-              type="button"
-              class="mt-2 w-full px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-600 font-semibold"
-            >
-              Send (Use WhatsApp/YouTube in real)
-            </button>
-            <p class="text-[10px] text-slate-500 mt-1">
-              Form is visual only. Use WhatsApp or YouTube comments to actually contact.
-            </p>
-          </div>
-        </form>
-      </div>
-    </section>
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="border-t border-slate-800 py-4 bg-black/80">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-400">
-      <p>© <span id="year"></span> Balu Universe Movies. All rights reserved.</p>
-      <p>Made with ❤️ + Cinema + AI by Balu.</p>
-    </div>
-  </footer>
-
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-</body>
-              </html>          </a>
-        </div>
-        <p class="text-xs text-gray-500">
-          *This site shares info, posters, trailers & Balu’s own videos only.
-          No pirated downloads.
-        </p>
-      </div>
-
-      <div class="relative">
-        <div
-          class="w-full h-64 md:h-80 rounded-3xl bg-gradient-to-br from-indigo-500 via-purple-500 to-fuchsia-500 opacity-60 blur-3xl absolute -inset-4">
-        </div>
-        <div class="relative glass rounded-3xl border border-gray-700 p-6 md:p-8 shadow-2xl">
-          <h2 class="text-lg md:text-xl font-semibold mb-3">
-            Tonight in Balu Universe 🍿
-          </h2>
-          <ul class="text-xs text-gray-300 space-y-2 mb-4">
-            <li>• Highlight of the day – Featured Movie</li>
-            <li>• Quick rating, short review, no spoilers</li>
-            <li>• Link to official trailer</li>
-          </ul>
-          <p class="text-[11px] text-gray-400">
-            “Scroll down, pick a movie, read my vibe – then go watch legally
-            on OTT / theatre.”
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- LATEST MOVIES -->
-  <section id="latest" class="py-20 bg-gray-900 border-t border-gray-800">
-    <div class="max-w-6xl mx-auto px-4">
-      <h2 class="text-3xl font-bold mb-2 text-center">Latest Movies</h2>
-      <p class="text-gray-400 text-sm text-center mb-10">
-        Add posters, language, genre and where to watch (OTT / Theatre).
-      </p>
-
-      <div class="grid md:grid-cols-3 gap-6">
-        <!-- CARD 1 -->
-        <article class="glass rounded-2xl border border-gray-800 overflow-hidden flex flex-col">
-          <div class="h-40 bg-gradient-to-br from-indigo-500 via-purple-500 to-fuchsia-500"></div>
-          <div class="p-4 flex-1 flex flex-col">
-            <h3 class="text-sm font-semibold mb-1">Movie Title 1</h3>
-            <p class="text-[11px] text-gray-400 mb-1">
-              Language • Genre • Year
-            </p>
-            <p class="text-xs text-gray-300 mb-3">
-              Small 2–3 line description of the movie. You can write your own
-              style in Telugu + English mix.
-            </p>
-            <div class="mt-auto flex items-center justify-between text-[11px] text-gray-400">
-              <span>⭐ 8.2 / 10 (Balu Rating)</span>
-              <a href="#" class="text-indigo-400 hover:text-indigo-300">
-                Official Trailer →
-              </a>
-            </div>
-          </div>
-        </article>
-
-        <!-- CARD 2 -->
-        <article class="glass rounded-2xl border border-gray-800 overflow-hidden flex flex-col">
-          <div class="h-40 bg-gradient-to-br from-emerald-500 via-cyan-500 to-blue-500"></div>
-          <div class="p-4 flex-1 flex flex-col">
-            <h3 class="text-sm font-semibold mb-1">Movie Title 2</h3>
-            <p class="text-[11px] text-gray-400 mb-1">
-              Language • Genre • Year
-            </p>
-            <p class="text-xs text-gray-300 mb-3">
-              Here you can write your quick thoughts – mass movie aa, class aa,
-              family aa, etc.
-            </p>
-            <div class="mt-auto flex items-center justify-between text-[11px] text-gray-400">
-              <span>⭐ 7.4 / 10 (Balu Rating)</span>
-              <a href="#" class="text-indigo-400 hover:text-indigo-300">
-                Official Trailer →
-              </a>
-            </div>
-          </div>
-        </article>
-
-        <!-- CARD 3 -->
-        <article class="glass rounded-2xl border border-gray-800 overflow-hidden flex flex-col">
-          <div class="h-40 bg-gradient-to-br from-orange-500 via-pink-500 to-rose-500"></div>
-          <div class="p-4 flex-1 flex flex-col">
-            <h3 class="text-sm font-semibold mb-1">Movie Title 3</h3>
-            <p class="text-[11px] text-gray-400 mb-1">
-              Language • Genre • Year
-            </p>
-            <p class="text-xs text-gray-300 mb-3">
-              Short description + where to watch legally (OTT name / theatre).
-            </p>
-            <div class="mt-auto flex items-center justify-between text-[11px] text-gray-400">
-              <span>⭐ 9.0 / 10 (Balu Rating)</span>
-              <a href="#" class="text-indigo-400 hover:text-indigo-300">
-                Official Trailer →
-              </a>
-            </div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- REVIEWS SECTION -->
-  <section id="reviews" class="py-20 bg-gray-950">
-    <div class="max-w-5xl mx-auto px-4">
-      <h2 class="text-3xl font-bold mb-2 text-center">Balu’s Movie Reviews</h2>
-      <p class="text-gray-400 text-sm text-center mb-10">
-        Write full reviews here – Telugu slang, honest opinion, your style.
-      </p>
-
-      <div class="space-y-6">
-        <!-- REVIEW 1 -->
-        <article class="glass rounded-2xl border border-gray-800 p-5">
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-lg font-semibold">Movie Title 1 – Review</h3>
-            <span class="text-xs text-yellow-300 font-semibold">
-              ⭐ 8.2 / 10
-            </span>
-          </div>
-          <p class="text-xs text-gray-400 mb-2">
-            Genre • Language • Director • Cast
-          </p>
-          <p class="text-sm text-gray-200">
-            ఇక్కడ నువ్వు నీ ఫుల్ review style లో రాయొచ్చు.
-            ఎక్కడ slow అయింది, ఎక్కడ mass అయ్యింది, songs, BGM, climax – అన్నీ.
-            Spoilers avoid చేయాలి అనిపిస్తే hint మాత్రమే ఇవ్వు.
-          </p>
-        </article>
-
-        <!-- REVIEW 2 -->
-        <article class="glass rounded-2xl border border-gray-800 p-5">
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-lg font-semibold">Movie Title 2 – Review</h3>
-            <span class="text-xs text-yellow-300 font-semibold">
-              ⭐ 7.0 / 10
-            </span>
-          </div>
-          <p class="text-xs text-gray-400 mb-2">
-            Genre • Language • Director • Cast
-          </p>
-          <p class="text-sm text-gray-200">
-            Second review కూడా ఇలాగే. నీ YouTube review video ఉంటే,
-            క్రింద “Watch review on YouTube” లింక్ కూడా add చేయొచ్చు.
-          </p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- BALU ORIGINALS -->
-  <section id="originals" class="py-20 bg-gray-900 border-t border-gray-800">
-    <div class="max-w-6xl mx-auto px-4">
-      <h2 class="text-3xl font-bold mb-2 text-center">Balu Originals</h2>
-      <p class="text-gray-400 text-sm text-center mb-8">
-        Your own short films, edits, AI videos. Only your copyrighted content.
-      </p>
-
-      <div class="grid md:grid-cols-2 gap-8">
-        <!-- ORIGINAL 1 -->
-        <div class="glass rounded-2xl border border-gray-800 p-4">
-          <h3 class="text-sm font-semibold mb-2">Original Short Film / Edit 1</h3>
-          <!-- Replace VIDEO_ID_1 with your real YouTube video id -->
-          <div class="mb-3">
-            <iframe
-              class="w-full h-56 rounded-xl border border-gray-800"
-              src="https://www.youtube.com/embed/VIDEO_ID_1"
-              title="Balu Original 1"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <p class="text-xs text-gray-300 mb-2">
-            చిన్న description – ఈ video గురించి 2 lines.
-          </p>
-          <!-- ఈ download బటన్ నీ స్వంత video files కోసమే ఉపయోగించాలి -->
-          <a href="#"
-             class="inline-block px-4 py-2 rounded-full bg-indigo-500 hover:bg-indigo-600 text-xs font-semibold">
-            Download My Original (Optional)
-          </a>
-          <p class="text-[10px] text-gray-500 mt-1">
-            *Only your own content files – no movies from others.
-          </p>
-        </div>
-
-        <!-- ORIGINAL 2 -->
-        <div class="glass rounded-2xl border border-gray-800 p-4">
-          <h3 class="text-sm font-semibold mb-2">Original Short Film / Edit 2</h3>
-          <!-- Replace VIDEO_ID_2 with your real YouTube video id -->
-          <div class="mb-3">
-            <iframe
-              class="w-full h-56 rounded-xl border border-gray-800"
-              src="https://www.youtube.com/embed/VIDEO_ID_2"
-              title="Balu Original 2"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowfullscreen>
-            </iframe>
-          </div>
-          <p class="text-xs text-gray-300 mb-2">
-            Second original – AI edit, montage, anything you create.
-          </p>
-          <a href="#"
-             class="inline-block px-4 py-2 rounded-full bg-indigo-500 hover:bg-indigo-600 text-xs font-semibold">
-            Download My Original (Optional)
-          </a>
-          <p class="text-[10px] text-gray-500 mt-1">
-            *Again – only your videos, no pirated movies.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact" class="py-20 bg-gray-950 border-t border-gray-800">
-    <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-3xl font-bold mb-2 text-center">Contact Balu</h2>
-      <p class="text-gray-400 text-sm text-center mb-8">
-        Want me to review a movie, talk about a scene, or collab? Ping me here.
-      </p>
-
-      <div class="grid md:grid-cols-2 gap-8">
-        <div class="glass rounded-2xl border border-gray-800 p-6">
-          <h3 class="text-lg font-semibold mb-3">Social & Direct</h3>
-          <ul class="text-sm text-gray-300 space-y-2 mb-4">
-            <li>• WhatsApp: <span class="text-gray-400">+91-7981062250</span></li>
-            <li>• YouTube: 
-              <a href="https://youtube.com/@thedreamuniverse-26?si=x8-kqBOQrMtuXUME"
-                 target="_blank" class="text-indigo-400">
-                The Dream Universe
-              </a>
-            </li>
-            <li>• Email: <span class="text-gray-400">baluuniverse@example.com</span></li>
-          </ul>
-          <p class="text-[11px] text-gray-500">
-            For any movie request: send movie name + language + where you watched.
-          </p>
-        </div>
-
-        <div class="glass rounded-2xl border border-gray-800 p-6">
-          <h3 class="text-lg font-semibold mb-3">Request / Feedback Form</h3>
-          <form class="space-y-3 text-sm">
-            <div>
-              <label class="block text-gray-300 mb-1">Name</label>
-              <input
-                type="text"
-                class="w-full px-3 py-2 rounded-lg bg-gray-950 border border-gray-800 focus:outline-none focus:border-indigo-400"
-                placeholder="Your name" />
-            </div>
-            <div>
-              <label class="block text-gray-300 mb-1">Email or Insta ID</label>
-              <input
-                type="text"
-                class="w-full px-3 py-2 rounded-lg bg-gray-950 border border-gray-800 focus:outline-none focus:border-indigo-400"
-                placeholder="you@example.com / @yourid" />
-            </div>
-            <div>
-              <label class="block text-gray-300 mb-1">Message</label>
-              <textarea
-                rows="3"
-                class="w-full px-3 py-2 rounded-lg bg-gray-950 border border-gray-800 focus:outline-none focus:border-indigo-400"
-                placeholder="Example: Review this movie / Talk about this scene..."></textarea>
-            </div>
-            <button
-              type="button"
-              class="w-full px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-600 font-semibold">
-              Send (Use WhatsApp / Email in real)
-            </button>
-            <p class="text-[11px] text-gray-500">
-              Form is static. Use WhatsApp / Email for real messages.
-            </p>
           </form>
         </div>
-      </div>
+      </section>
     </div>
-  </section>
 
-  <!-- FOOTER -->
-  <footer class="py-6 bg-gray-900 border-t border-gray-900">
-    <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500 space-y-2 md:space-y-0">
-      <p>© <span id="year"></span> Balu Universe Movies. All rights reserved.</p>
-      <p>Made with ❤️ + Cinema Love by Balu.</p>
-    </div>
-  </footer>
+    <!-- Toast box (messages kosam) -->
+    <div id="toast"></div>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-</body>
+    <!-- JS file connect -->
+    <script src="index.js"></script>
+  </body>
 </html>
-<div class="glass rounded-2xl border border-gray-800 p-4">
-  <h3 class="text-sm font-semibold mb-2">Balu AI Edit 1</h3>
-
-  <!-- Optional: YouTube embed instead of / along with download -->
-  <iframe
-    class="w-full h-56 rounded-xl border border-gray-800 mb-3"
-    src="https://www.youtube.com/embed/VIDEO_ID_HERE"
-    title="Balu AI Edit 1"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen>
-  </iframe>
-
-  <p class="text-xs text-gray-300 mb-3">
-    Short description about this AI edit – style, theme, etc.
-  </p>
-
-  <!-- DOWNLOAD BUTTON (LOCAL FILE) -->
-  <a href="balu-ai-edit-1.mp4"
-     download
-     class="inline-block px-4 py-2 rounded-full bg-indigo-500 hover:bg-indigo-600 text-xs font-semibold">
-    Download This AI Edit
-  </a>
-
-  <p class="text-[10px] text-gray-500 mt-1">
-    *Only Balu’s own AI edit videos. No movies or other copyrighted content.
-  </p>
-</div><div class="aspect-w-16 aspect-h-9 w-full mb-3">
-  <iframe
-    class="w-full h-52 sm:h-60 rounded-xl border border-slate-800"
-    src="https://www.youtube.com/embed/m158PjU_XS8"
-    title="Balu AI Spiritual Edit"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-    allowfullscreen>
-  </iframe>
-</div>
-
-<p class="text-xs sm:text-sm text-slate-300">
-  A peaceful spiritual AI short created by Balu Universe.
-</p>
