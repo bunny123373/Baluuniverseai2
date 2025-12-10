@@ -1,400 +1,601 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>BALUJESWANTH</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Baluflix</title>
 
-    <!-- Netflix style CSS -->
-    <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          sans-serif;
-      }
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
 
-      body {
-        min-height: 100vh;
-        background: radial-gradient(circle at top, #3b3b3b 0, #000 55%);
-        color: #fff;
-      }
+    body {
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #3b3b3b 0, #000 55%);
+      color: #fff;
+    }
 
-      .app {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding: 20px 16px 80px;
-      }
+    .app {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px 16px 80px;
+    }
 
-      /* Top Nav */
-      .nav {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 30px;
-      }
+    /* NAV BAR */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+    }
 
-      .logo {
-        font-size: 28px;
-        font-weight: 800;
-        letter-spacing: 2px;
-        color: #e50914;
-        text-transform: uppercase;
-      }
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: #e50914;
+      text-transform: uppercase;
+    }
 
-      .nav-text {
-        font-size: 14px;
-        opacity: 0.85;
-      }
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      font-size: 14px;
+    }
 
-      /* Hero / Intro card */
+    .nav-links a {
+      text-decoration: none;
+      color: #e5e5e5;
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.6fr);
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+
+    .hero-left h1 {
+      font-size: 34px;
+      margin-bottom: 8px;
+    }
+
+    .hero-left h4 {
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .hero-left p {
+      margin-bottom: 8px;
+      color: #d0d0d0;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(229, 9, 20, 0.15);
+      border: 1px solid #e50914;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .hero-right {
+      background: linear-gradient(135deg, #181818, #111);
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    .hero-right img {
+      width: 100%;
+      border-radius: 10px;
+      display: block;
+      margin-bottom: 10px;
+      object-fit: cover;
+      max-height: 220px;
+    }
+
+    .hero-right p {
+      font-size: 14px;
+      color: #e5e5e5;
+      margin-bottom: 6px;
+    }
+
+    .hero-right small {
+      font-size: 11px;
+      opacity: 0.7;
+    }
+
+    /* VIDEO SECTION */
+    .video-section {
+      margin-bottom: 32px;
+    }
+
+    .video-label {
+      font-size: 13px;
+      color: #b3b3b3;
+    }
+
+    .video-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .video-header-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .video-section h2 {
+      font-size: 20px;
+      margin-bottom: 2px;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .primary-btn {
+      background: #e50914;
+      color: #fff;
+    }
+
+    .primary-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .secondary-btn {
+      background: transparent;
+      color: #fff;
+      border: 1px solid #555;
+    }
+
+    .secondary-btn:hover {
+      border-color: #e50914;
+    }
+
+    .video-card {
+      background: #181818;
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.7);
+    }
+
+    .video-card iframe {
+      width: 100%;
+      border-radius: 10px;
+      border: none;
+      display: block;
+    }
+
+    .video-card p {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #e5e5e5;
+    }
+
+    .playlist {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .playlist-item {
+      width: 100%;
+      text-align: left;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background: #101010;
+      color: #f5f5f5;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .playlist-item span {
+      display: block;
+      font-size: 11px;
+      opacity: 0.7;
+    }
+
+    .playlist-item.active {
+      border-color: #e50914;
+      background: radial-gradient(circle at left, #3b0004 0, #101010 55%);
+    }
+
+    .playlist-item:hover {
+      border-color: #e50914;
+    }
+
+    /* CONTINUE WATCHING */
+    .continue-section {
+      margin-top: 18px;
+    }
+
+    .continue-title {
+      font-size: 16px;
+      margin-bottom: 6px;
+      color: #e5e5e5;
+    }
+
+    .continue-card {
+      background: #141414;
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid #333;
+    }
+
+    .continue-main-title {
+      font-size: 14px;
+    }
+
+    .continue-desc {
+      font-size: 12px;
+      color: #b3b3b3;
+    }
+
+    /* CONTACT */
+    .contact-section h1 {
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .contact-card {
+      background: #181818;
+      border-radius: 16px;
+      padding: 18px 16px 20px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    form {
+      display: grid;
+      gap: 12px;
+      font-size: 14px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 4px;
+      color: #e5e5e5;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background: #101010;
+      color: #fff;
+    }
+
+    .inline-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      margin-top: 2px;
+    }
+
+    .inline-options label {
+      margin-bottom: 0;
+    }
+
+    input[type="radio"] {
+      margin-right: 4px;
+      accent-color: #e50914;
+    }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120%);
+      background: rgba(229, 9, 20, 0.94);
+      color: #fff;
+      padding: 14px 22px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      transition: 0.35s ease;
+      z-index: 9999;
+      max-width: 90%;
+      text-align: left;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 720px) {
       .hero {
-        display: grid;
-        grid-template-columns: minmax(0, 2fr) minmax(0, 1.6fr);
-        gap: 24px;
-        align-items: center;
-        margin-bottom: 32px;
-      }
-
-      .hero-left h1 {
-        font-size: 34px;
-        margin-bottom: 8px;
-      }
-
-      .hero-left h4 {
-        font-weight: 500;
-        color: #e5e5e5;
-        margin-bottom: 16px;
-      }
-
-      .hero-left p {
-        margin-bottom: 8px;
-        color: #d0d0d0;
-      }
-
-      .hero-tag {
-        display: inline-block;
-        margin-top: 10px;
-        padding: 4px 10px;
-        border-radius: 999px;
-        background: rgba(229, 9, 20, 0.15);
-        border: 1px solid #e50914;
-        font-size: 12px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        grid-template-columns: minmax(0, 1fr);
       }
 
       .hero-right {
-        background: linear-gradient(135deg, #181818, #111);
-        border-radius: 16px;
-        padding: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+        order: -1;
       }
 
-      .hero-right img {
+      .video-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .video-header-actions {
         width: 100%;
-        border-radius: 10px;
-        display: block;
-        margin-bottom: 10px;
-        object-fit: cover;
-        max-height: 220px;
       }
 
-      .hero-right p {
-        font-size: 14px;
-        color: #e5e5e5;
-        margin-bottom: 6px;
-      }
-
-      .hero-right small {
-        font-size: 11px;
-        opacity: 0.7;
-      }
-
-      /* Video section */
-      .video-section {
-        margin-bottom: 32px;
-      }
-
-      .video-section h2 {
-        font-size: 20px;
-        margin-bottom: 12px;
-      }
-
-      .video-card {
-        background: #181818;
-        border-radius: 16px;
-        padding: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.7);
-      }
-
-      .video-card iframe {
+      .video-header-actions .primary-btn,
+      .video-header-actions .secondary-btn {
         width: 100%;
-        border-radius: 10px;
-        border: none;
-        display: block;
+        text-align: center;
       }
 
-      .video-card p {
-        margin-top: 10px;
-        font-size: 14px;
-        color: #e5e5e5;
+      .continue-card {
+        flex-direction: column;
+        align-items: flex-start;
       }
 
-      /* Contact card */
-      .contact-section h1 {
-        font-size: 24px;
-        margin-bottom: 12px;
-      }
-
-      .contact-card {
-        background: #181818;
-        border-radius: 16px;
-        padding: 18px 16px 20px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-      }
-
-      form {
-        display: grid;
-        gap: 12px;
-        font-size: 14px;
-      }
-
-      label {
-        display: block;
-        margin-bottom: 4px;
-        color: #e5e5e5;
-      }
-
-      input[type="text"],
-      input[type="email"] {
+      .continue-card .primary-btn {
         width: 100%;
-        padding: 8px 10px;
-        border-radius: 6px;
-        border: 1px solid #333;
-        background: #101010;
-        color: #fff;
+        text-align: center;
       }
+    }
+  </style>
+</head>
 
-      .field-group {
-        margin-bottom: 4px;
-      }
+<body>
+  <div class="app">
+    <!-- NAV -->
+    <header class="nav">
+      <div class="logo">baluflix</div>
+      <div class="nav-links">
+        <a href="#videos">Videos</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </header>
 
-      .inline-options {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 14px;
-        align-items: center;
-        margin-top: 2px;
-      }
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-left">
+        <h1>baluflix</h1>
+        <h4>follow more</h4>
+        <p>hello peoples how are you</p>
+        <p>this website is only entertainment</p>
+        <span class="hero-tag">balujeswanth original page</span>
+      </div>
 
-      .inline-options label {
-        margin-bottom: 0;
-      }
+      <aside class="hero-right">
+        <img src="IMG_20251024_090331_363.jpeg" alt="Balujeswanth image" />
+        <p>gadaparai my own video</p>
+        <small>scroll down to watch &amp; contact me</small>
+      </aside>
+    </section>
 
-      input[type="radio"] {
-        margin-right: 4px;
-        accent-color: #e50914;
-      }
-
-      /* Toast (Netflix style message) */
-      #toast {
-        position: fixed;
-        bottom: 22px;
-        left: 50%;
-        transform: translateX(-50%) translateY(120%);
-        background: rgba(229, 9, 20, 0.94);
-        color: #fff;
-        padding: 14px 22px;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 500;
-        letter-spacing: 0.4px;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
-        opacity: 0;
-        transition: 0.35s ease;
-        z-index: 9999;
-        max-width: 90%;
-        text-align: left;
-      }
-
-      #toast.show {
-        opacity: 1;
-        transform: translateX(-50%) translateY(0);
-      }
-
-      @media (max-width: 720px) {
-        .hero {
-          grid-template-columns: minmax(0, 1fr);
-        }
-
-        .hero-right {
-          order: -1;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <div class="app">
-      <!-- Top Navbar -->
-      <header class="nav">
-        <div class="logo">baluflix</div>
-        <div class="nav-text">follow more</div>
-      </header>
-
-      <!-- HERO SECTION -->
-      <section class="hero">
-        <div class="hero-left">
-          <h1>baluflix</h1>
-          <h4>follow more</h4>
-
-          <p>hello peoples how are you</p>
-          <p>this website is movies upload movies illigal</p>
-
-          <span class="hero-tag">balujeswanth original page</span>
+    <!-- VIDEO SECTION (PLAYLIST) -->
+    <section class="video-section" id="videos">
+      <div class="video-header">
+        <div>
+          <h2 id="currentTitle">Gadaparai dimsa song</h2>
+          <p id="currentLabel" class="video-label">Now playing</p>
         </div>
+        <div class="video-header-actions">
+          <a id="youtubeBtn" class="secondary-btn" href="#" target="_blank">
+            ▶ Open on YouTube
+          </a>
+          <button id="nextBtn" class="primary-btn">Next video ▶</button>
+        </div>
+      </div>
 
-        <aside class="hero-right">
-          <img src="IMG_20251024_090331_363.jpeg" alt="Balujeswanth image" />
-          <p>gadaparai my own video</p>
-          <small>scroll down to watch &amp; contact me</small>
-        </aside>
-      </section>
+      <div class="video-card">
+        <iframe
+          id="mainPlayer"
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/zW4A32pDtZk?rel=0"
+          title="YouTube video player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+          allowfullscreen
+          frameborder="0"
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
 
-      <!-- VIDEO SECTION -->
-      <section class="video-section">
-        <h2>Featured Video</h2>
-        <div class="video-card">
-          <iframe
-            width="560"
-            height="315"
-            src="https://www.youtube.com/embed/zW4A32pDtZk?si=vppWE-KxJSU4F9_V"
-            title="YouTube video player"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allowfullscreen
-          ></iframe>
-          <P>Gadaparai dimsa song</p>
+        <p id="currentDesc">Gadaparai dimsa song</p>
+      </div>
+
+      <!-- PLAYLIST BUTTONS -->
+      <div class="playlist">
+        <button
+          class="playlist-item active"
+          data-index="0"
+          data-video-id="zW4A32pDtZk"
+          data-url="https://www.youtube.com/watch?v=zW4A32pDtZk"
+          data-title="Gadaparai dimsa song"
+          data-desc="Gadaparai dimsa song - my village vibes"
+        >
+          1. Gadaparai dimsa song
+          <span>My village vibes</span>
+        </button>
+
+        <button
+          class="playlist-item"
+          data-index="1"
+          data-video-id="7PzaHv0ql8Q"
+          data-url="https://www.youtube.com/watch?v=7PzaHv0ql8Q"
+          data-title="Christmas Musical Video"
+          data-desc="Christmas Musical Video - Gadaparai village christmas sambaralu"
+        >
+          2. Christmas Musical Video
+          <span>Gadaparai village christmas sambaralu</span>
+        </button>
+
+        <button
+          class="playlist-item"
+          data-index="2"
+          data-video-id="6jRwn-HkmSU"
+          data-url="https://www.youtube.com/watch?v=6jRwn-HkmSU"
+          data-title="THE MIND FOREST"
+          data-desc="THE MIND FOREST short film"
+        >
+          3. THE MIND FOREST
+          <span>Featured of video</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section class="contact-section" id="contact">
+      <h1>CONTACT ME</h1>
+      <div class="contact-card">
+        <form id="contactForm">
+
+          <!-- Name -->
+          <label>Your Name:</label>
+          <input type="text" id="name" placeholder="Enter your name" />
+
+          <!-- Email -->
+          <label>Your Email:</label>
+          <input type="email" id="email" placeholder="Enter your email" />
+
+          <!-- Gender -->
+          <label>Choose your Gender:</label>
+          <div class="inline-options">
+            <label><input type="radio" name="gender" value="male"> Male</label>
+            <label><input type="radio" name="gender" value="female"> Female</label>
           </div>
-          </section>
-                <!-- VIDEO SECTION -->christmas
-      <section class="video-section">
-        <h2>Featured Video</h2>
-        <div class="video-card">
-       <iframe 
-       width="560" 
-       height="315" 
-       src="https://www.youtube.com/embed/7PzaHv0ql8Q?si=vRrR1zYg-jzXFfzY" 
-       title="YouTube video player" frameborder="0" 
-       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-       referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <p>Christmas Musical Video</p>
-        </div>
-      </section>
-      <!-- VIDEO SECTION -->
-      <section class="video-section">
-          <H2>Featured Of Video</h2>
-          <div class="video-card">
-              <iframe width="560" height="315" src="https://www.youtube.com/embed/6jRwn-HkmSU?si=6ahemgNCvMPBYaMo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-              <P>THE MIND FOREST</P>
-</div>
-</section>
-       <!--VIDEO SECTION-SECTION-->
-       <section class="video-section">
-           <h2>Featured Of Video</h2>
-          <div class="video-card">
-              </ifram>
-          <iframe 
-width="560"
-height="315"
-src="https://www.youtube.com/embed/ayGNy7smJug?si=ioOupfpqL6ESV8yc" 
-title="YouTube video player" 
-frameborder="0" 
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <P>Gadaparai village christmas sambaralu</p>
+
+          <!-- Coding -->
+          <label>Are you interested in coding?</label>
+          <div class="inline-options">
+            <label><input type="radio" name="coding" value="yes"> Yes</label>
+            <label><input type="radio" name="coding" value="no"> No</label>
+          </div>
+
+          <button type="submit" class="primary-btn" style="margin-top:10px;">Submit</button>
+        </form>
+      </div>
+    </section>
   </div>
-       </section>
-      <!-- CONTACT SECTION -->
-      <section class="contact-section">
-        <h1>CONTACT ME</h1>
-        <div class="contact-card">
-          <form action="">
-            <!-- Name -->
-            <div class="field-group">
-              <label for="name">name:</label>
-              <input type="text" id="name" name="name" />
-            </div>
 
-            <!-- Email -->
-            <div class="field-group">
-              <label for="email">email:</label>
-              <input type="email" id="email" name="email" />
-            </div>
+  <!-- TOAST -->
+  <div id="toast"></div>
 
-            <!-- Gender -->
-            <div class="field-group">
-              <b>choose your gender</b>
-              <div class="inline-options">
-                <label for="male">
-                  <input
-                    type="radio"
-                    id="male"
-                    name="gender"
-                    value="male"
-                  />
-                  male
-                </label>
+  <script>
+    const playlistButtons = document.querySelectorAll(".playlist-item");
+    const player = document.getElementById("mainPlayer");
+    const currentTitle = document.getElementById("currentTitle");
+    const currentDesc = document.getElementById("currentDesc");
+    const currentLabel = document.getElementById("currentLabel");
+    const youtubeBtn = document.getElementById("youtubeBtn");
+    const nextBtn = document.getElementById("nextBtn");
 
-                <label for="female">
-                  <input
-                    type="radio"
-                    id="female"
-                    name="gender"
-                    value="female"
-                  />
-                  female
-                </label>
-              </div>
-            </div>
+    const STORAGE_KEY = "baluflix-last-index";
+    let currentIndex = 0;
 
-            <!-- Coding interest -->
-            <div class="field-group">
-              <b>coding interest</b>
-              <div class="inline-options">
-                <label for="coding-yes">
-                  <input
-                    type="radio"
-                    id="coding-yes"
-                    name="coding_interest"
-                    value="yes"
-                  />
-                  yes
-                </label>
+    function buildSrc(id, autoplay) {
+      const base = `https://www.youtube.com/embed/${id}?rel=0`;
+      return autoplay ? base + "&autoplay=1" : base;
+    }
 
-                <label for="coding-no">
-                  <input
-                    type="radio"
-                    id="coding-no"
-                    name="coding_interest"
-                    value="no"
-                  />
-                  no
-                </label>
-              </div>
-            </div>
-          </form>
-        </div>
-      </section>
-    </div>
+    function saveLastIndex(i) {
+      localStorage.setItem(STORAGE_KEY, String(i));
+    }
 
-    <!-- Toast box (messages kosam) -->
-    <div id="toast"></div>
+    function loadVideo(index, autoplay = true) {
+      const btn = playlistButtons[index];
+      currentIndex = index;
 
-    <!-- JS file connect -->
-    <script src="index.js"></script>
-  </body>
+      playlistButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      const id = btn.dataset.videoId;
+      const title = btn.dataset.title;
+      const desc = btn.dataset.desc;
+
+      currentTitle.textContent = title;
+      currentDesc.textContent = desc;
+
+      player.src = buildSrc(id, autoplay);
+      youtubeBtn.href = btn.dataset.url;
+
+      saveLastIndex(index);
+    }
+
+    playlistButtons.forEach((btn, i) => {
+      btn.addEventListener("click", () => loadVideo(i, true));
+    });
+
+    nextBtn.addEventListener("click", () => {
+      let next = currentIndex + 1;
+      if (next >= playlistButtons.length) next = 0;
+      loadVideo(next, true);
+    });
+
+    // Load last played
+    const last = localStorage.getItem(STORAGE_KEY);
+    if (last !== null) {
+      loadVideo(parseInt(last), false);
+    } else {
+      loadVideo(0, false);
+    }
+
+    // CONTACT FORM + TOAST
+    const toast = document.getElementById("toast");
+    const form = document.getElementById("contactForm");
+
+    function showToast(msg) {
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 3000);
+    }
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      showToast(`Thank you ${name}! Your details were sent.`);
+      form.reset();
+    });
+  </script>
+
+</body>
 </html>
