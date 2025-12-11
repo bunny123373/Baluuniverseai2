@@ -722,6 +722,120 @@
       }
     });
   </script>
+<script>
+// ---------- CONFIG ----------
+const API_BASE = ""; // empty => same origin, or set to "https://your-service.onrender.com"
 
+// ---------- RENDER HELPERS ----------
+function el(tag, props={}, children=[]) {
+  const e = document.createElement(tag);
+  Object.entries(props).forEach(([k,v]) => {
+    if(k === "class") e.className = v;
+    else if(k === "text") e.textContent = v;
+    else e.setAttribute(k, v);
+  });
+  children.forEach(c => e.appendChild(c));
+  return e;
+}
+
+// Render video cards into the slider row
+function renderVideos(videos) {
+  const row = document.getElementById("videoRow");
+  if(!row) return;
+  row.innerHTML = "";
+  videos.forEach(v=>{
+    const card = el("div",{class:"card", "data-id": v.id, "data-title": v.title, "data-type": v.type});
+    const img = el("img",{src: v.thumb || `https://img.youtube.com/vi/${v.id}/hqdefault.jpg`, alt: v.title});
+    const p = el("p",{text: v.title});
+    card.appendChild(img); card.appendChild(p);
+    card.addEventListener("click", ()=> playVideo(v));
+    row.appendChild(card);
+  });
+}
+
+// Play selected video
+function playVideo(video) {
+  const player = document.getElementById("mainPlayer");
+  if(!player) return;
+  player.src = `https://www.youtube.com/embed/${video.id}?autoplay=1`;
+  document.getElementById("nowTitle").textContent = video.title || "Now Playing";
+  document.getElementById("nowType").textContent = video.type || "Video";
+  // highlight
+  document.querySelectorAll(".card").forEach(c=> c.classList.toggle("card-current", c.dataset.id === video.id));
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// ---------- API CALLS ----------
+async function fetchVideos() {
+  try {
+    const res = await fetch((API_BASE || "") + "/api/videos");
+    const data = await res.json();
+    if(data.ok) {
+      renderVideos(data.videos || []);
+    } else {
+      console.error("API /videos error", data);
+    }
+  } catch (err) {
+    console.error("Fetch videos failed", err);
+  }
+}
+
+// Upload (Admin) — sends to backend POST /api/videos
+async function uploadVideoToServer(payload, adminSecret) {
+  try {
+    const headers = { "Content-Type": "application/json" };
+    if(adminSecret) headers["x-admin-secret"] = adminSecret;
+    const res = await fetch((API_BASE || "") + "/api/videos", {
+      method: "POST",
+      headers,
+      body: JSON.stringify(payload)
+    });
+    return await res.json();
+  } catch(e) {
+    return { ok:false, error: e.message };
+  }
+}
+
+// ---------- Hook upload form (existing admin UI) ----------
+document.addEventListener("DOMContentLoaded", () => {
+  // initial load
+  fetchVideos();
+
+  // wire the admin upload form (if present)
+  const uploadForm = document.getElementById("uploadForm");
+  if(uploadForm) {
+    uploadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const title = document.getElementById("upTitle").value.trim();
+      const url = document.getElementById("upUrl").value.trim();
+      const type = document.getElementById("upType").value;
+      const thumb = document.getElementById("upThumb").value.trim();
+
+      if(!title || !url) {
+        alert("Title and URL required");
+        return;
+      }
+
+      // ask admin for secret (dev only). For production, use login/session.
+      let adminSecret = null;
+      if(prompt) {
+        adminSecret = prompt("Enter admin secret (for upload) — leave blank if none:");
+      }
+
+      const payload = { title, url, type, thumb };
+
+      const result = await uploadVideoToServer(payload, adminSecret);
+      if(result.ok) {
+        // prepend in UI
+        fetchVideos(); // refresh list from server
+        alert("Uploaded!");
+        uploadForm.reset();
+      } else {
+        alert("Upload failed: " + (result.error || JSON.stringify(result)));
+      }
+    });
+  }
+});
+</script>
 </body>
 </html>
