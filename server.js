@@ -1,4 +1,24 @@
+// server.js - simple Express static server + optional API hooks
 const express = require("express");
+const path = require("path");
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// optional: connect to MongoDB if you later add DB code (use MONGO_URI env var)
+// const { MongoClient } = require('mongodb');
+// const client = new MongoClient(process.env.MONGO_URI || '', {});
+
+// serve static files from repo root (index.html etc.)
+app.use(express.static(path.join(__dirname, "/")));
+
+// fallback to index.html for SPA
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+app.listen(PORT, () => {
+  console.log("Server running on port", PORT);
+});const express = require("express");
 const cors = require("cors");
 const { MongoClient } = require("mongodb");
 
