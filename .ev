@@ -1,0 +1,5 @@
+PORT=4000
+MONGO_URI=your_mongodb_connection_string_here
+ADMIN_USER=admin
+ADMIN_PASS=strongpassword
+JWT_SECRET=someverystrongsecret
