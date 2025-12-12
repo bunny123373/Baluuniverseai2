@@ -1,5 +1,5 @@
 PORT=4000
-MONGO_URI=mongodb+srv://balu_admin:Balujeswanth25!@cluster0.abcdefg.mongodb.net/baluflix?retryWrites=true&w=majority
+MONGO_URI=mongodb+srv://Balujeswanth:Balujeswanth25@cluster0.hqqoxgl.mongodb.net/?appName=Cluster0
 ADMIN_USER=admin
 ADMIN_PASS=Balujeswanth25
 JWT_SECRET=SuperSecretJWTKeyChangeThis
