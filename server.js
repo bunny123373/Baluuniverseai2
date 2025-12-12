@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 
-const Video = require('./models/Video');
+const Video = require('./Video');
 
 const app = express();
 app.use(cors());
